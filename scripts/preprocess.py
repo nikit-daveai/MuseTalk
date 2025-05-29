@@ -324,7 +324,7 @@ def main(cfg):
     clip_vid_list = os.listdir(cfg.video_audio_clip_root)
     extract_audio(cfg.video_audio_clip_root, cfg.video_audio_clip_root, clip_vid_list)
     print('Exatracted Audios') 
-    4. Generate video metadata
+    #4. Generate video metadata
     analyze_video(cfg.video_audio_clip_root, cfg.meta_root, clip_vid_list)
     
     # 5. Generate training and validation set lists
