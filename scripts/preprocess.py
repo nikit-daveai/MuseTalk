@@ -1,3 +1,5 @@
+import faulthandler; faulthandler.enable()
+
 import os
 import argparse
 import subprocess
@@ -291,38 +293,38 @@ def analyze_video(org_path: str, dst_path: str, vid_list: List[str]) -> None:
 
 
 def main(cfg):
-    # print('Started')
-    # # Ensure all necessary directories exist
-    # os.makedirs(cfg.video_root_25fps, exist_ok=True)
-    # os.makedirs(cfg.video_audio_clip_root, exist_ok=True)
-    # os.makedirs(cfg.meta_root, exist_ok=True)
-    # os.makedirs(os.path.dirname(cfg.video_file_list), exist_ok=True)
-    # os.makedirs(os.path.dirname(cfg.video_clip_file_list_train), exist_ok=True)
-    # os.makedirs(os.path.dirname(cfg.video_clip_file_list_val), exist_ok=True)
+    print('Started')
+    # Ensure all necessary directories exist
+    os.makedirs(cfg.video_root_25fps, exist_ok=True)
+    os.makedirs(cfg.video_audio_clip_root, exist_ok=True)
+    os.makedirs(cfg.meta_root, exist_ok=True)
+    os.makedirs(os.path.dirname(cfg.video_file_list), exist_ok=True)
+    os.makedirs(os.path.dirname(cfg.video_clip_file_list_train), exist_ok=True)
+    os.makedirs(os.path.dirname(cfg.video_clip_file_list_val), exist_ok=True)
     
-    # print('completed creating directories')
+    print('completed creating directories')
 
-    # vid_list = os.listdir(cfg.video_root_raw)
-    # sorted_vid_list = sorted(vid_list)
+    vid_list = os.listdir(cfg.video_root_raw)
+    sorted_vid_list = sorted(vid_list)
  
-    # # Save video file list
-    # with open(cfg.video_file_list, 'w') as file:
-    #     for vid in sorted_vid_list:
-    #         file.write(vid + '\n')
+    # Save video file list
+    with open(cfg.video_file_list, 'w') as file:
+        for vid in sorted_vid_list:
+            file.write(vid + '\n')
     
-    # print('saved video files')
-    # # 1. Convert videos to 25 FPS
-    # convert_video(cfg.video_root_raw, cfg.video_root_25fps, sorted_vid_list)
-    # print('converted videos to 25 FPS')    
-    # # 2. Segment videos into 30-second clips
-    # segment_video(cfg.video_root_25fps, cfg.video_audio_clip_root, vid_list, segment_duration=cfg.clip_len_second)
-    # print('Segmented videos to into 30-secon clips')
+    print('saved video files')
+    # 1. Convert videos to 25 FPS
+    convert_video(cfg.video_root_raw, cfg.video_root_25fps, sorted_vid_list)
+    print('converted videos to 25 FPS')    
+    # 2. Segment videos into 30-second clips
+    segment_video(cfg.video_root_25fps, cfg.video_audio_clip_root, vid_list, segment_duration=cfg.clip_len_second)
+    print('Segmented videos to into 30-secon clips')
     
-    # # 3. Extract audio
+    # 3. Extract audio
     clip_vid_list = os.listdir(cfg.video_audio_clip_root)
-    # extract_audio(cfg.video_audio_clip_root, cfg.video_audio_clip_root, clip_vid_list)
-    # print('Exatracted Audios') 
-    # 4. Generate video metadata
+    extract_audio(cfg.video_audio_clip_root, cfg.video_audio_clip_root, clip_vid_list)
+    print('Exatracted Audios') 
+    4. Generate video metadata
     analyze_video(cfg.video_audio_clip_root, cfg.meta_root, clip_vid_list)
     
     # 5. Generate training and validation set lists
