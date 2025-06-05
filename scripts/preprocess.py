@@ -194,7 +194,7 @@ def save_list_to_file(file_path: str, data_list: List[str]) -> None:
 def generate_train_list(cfg):
     train_file_path = cfg.video_clip_file_list_train
     val_file_path = cfg.video_clip_file_list_val
-    val_list_hdtf = cfg.val_list_hdtf
+    val_list_hdtf = ''#cfg.val_list_hdtf
 
     meta_list = os.listdir(cfg.meta_root)
 
