@@ -495,6 +495,18 @@ class FaceDataset(Dataset):
 
         raise ValueError("Unable to find a valid sample after maximum attempts.")
 
+class DAVEAIDataset(FaceDataset):
+    """DaveAI custom dataset class"""
+    def __init__(self, cfg):
+        root_path = './dataset/dave/meta'
+        list_paths = [
+            './dataset/dave/train.txt',
+        ]
+        repeats = [10]
+        super().__init__(cfg, list_paths, root_path, repeats)
+        print('DAVEAIDataset: ', len(self))
+
+
 class HDTFDataset(FaceDataset):
     """HDTF dataset class"""
     def __init__(self, cfg):
@@ -532,6 +544,8 @@ def PortraitDataset(cfg=None):
         return ConcatDataset([HDTFDataset(cfg)])
     elif cfg["dataset_key"] == "VFHQ":
         return ConcatDataset([VFHQDataset(cfg)])
+    elif cfg["dataset_key"] =='dave':
+        return ConcatDataset(DAVEAIDataset(cfg))
     else:  
         print("############ use all dataset ############ ")
         return ConcatDataset([HDTFDataset(cfg), VFHQDataset(cfg)])
