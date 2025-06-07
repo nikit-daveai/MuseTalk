@@ -1,5 +1,5 @@
-exp_name: 'test'  # Name of the experiment
-output_dir: './exp_out/stage2/'  # Directory to save experiment outputs
+exp_name: 'dave_custom_data'  # Name of the experiment
+output_dir: './exp_out/dave_custom_data/'  # Directory to save experiment outputs
 unet_sub_folder: musetalk  # Subfolder name for UNet model
 random_init_unet: False  # Whether to randomly initialize UNet (stage1) or use pretrained weights (stage2)
 whisper_path: "./models/whisper"  # Path to the Whisper model
@@ -19,7 +19,7 @@ random_margin_method: "normal"  # Method for random margin generation
 num_backward_frames: 16  # Number of frames to use for backward pass in SyncNet
 
 data:
-  dataset_key: "HDTF"  # Dataset to use for training
+  dataset_key: "dave"  # Dataset to use for training
   train_bs: 2  # Training batch size (actual batch size is train_bs*n_sample_frames)
   image_size: 256  # Size of input images
   n_sample_frames: 16  # Number of frames to sample per batch
