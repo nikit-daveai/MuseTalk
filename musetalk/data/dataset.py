@@ -301,6 +301,7 @@ class FaceDataset(Dataset):
     def __getitem__(self, idx):
         attempts = 0
         while attempts < self.max_attempts:
+            print(f'Attempt {attempts}')
             try:
                 meta_path = random.sample(self.meta_paths, k=1)[0]
                 with open(meta_path, 'r') as f:
@@ -490,7 +491,7 @@ class FaceDataset(Dataset):
                 wav_path=wav_path,
                 fps=fps,
             )
-
+            print('Done making sample, returing...')
             return sample
 
         raise ValueError("Unable to find a valid sample after maximum attempts.")
@@ -502,7 +503,7 @@ class DAVEAIDataset(FaceDataset):
         list_paths = [
             './dataset/dave/train.txt',
         ]
-        repeats = [10]
+        repeats = [1]
         super().__init__(cfg, list_paths, root_path, repeats)
         print('DAVEAIDataset: ', len(self))
 
@@ -545,7 +546,7 @@ def PortraitDataset(cfg=None):
     elif cfg["dataset_key"] == "VFHQ":
         return ConcatDataset([VFHQDataset(cfg)])
     elif cfg["dataset_key"] =='dave':
-        return ConcatDataset(DAVEAIDataset(cfg))
+        return ConcatDataset([DAVEAIDataset(cfg)])
     else:  
         print("############ use all dataset ############ ")
         return ConcatDataset([HDTFDataset(cfg), VFHQDataset(cfg)])
