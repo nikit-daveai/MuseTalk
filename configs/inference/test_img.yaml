@@ -1,0 +1,168 @@
+task_0:
+  audio_path: /home/nikit/benchmarking-videos/hindi_male_suresh_srinivasan_1/clip001_hindi_suresh_srinivasan_1.wav
+  result_name: video_clip014_english_sundar_pichai_1_audio_clip001_hindi_suresh_srinivasan_1.mp4
+  video_path: /home/nikit/benchmarking-videos/english_male_sundar_pichai_1/clip014_english_sundar_pichai_1.mp4
+task_1:
+  audio_path: /home/nikit/benchmarking-videos/hindi_male_pm_modi_1/clip016_pm_modi_1.wav
+  result_name: video_clip013_english_sundar_pichai_1_audio_clip016_pm_modi_1.mp4
+  video_path: /home/nikit/benchmarking-videos/english_male_sundar_pichai_1/clip013_english_sundar_pichai_1.mp4
+task_10:
+  audio_path: /home/nikit/benchmarking-videos/hindi_male_sujeet_govindani_1/clip012_hindi_sujeet_govindani_1.wav
+  result_name: video_clip001_hindi_suresh_srinivasan_1_audio_clip012_hindi_sujeet_govindani_1.mp4
+  video_path: /home/nikit/benchmarking-videos/hindi_male_suresh_srinivasan_1/clip001_hindi_suresh_srinivasan_1.mp4
+task_11:
+  audio_path: /home/nikit/benchmarking-videos/english_male_sjaishankar_1/clip016_english_sjaishankar_1.wav
+  result_name: video_clip004_hindi_suresh_srinivasan_1_audio_clip016_english_sjaishankar_1.mp4
+  video_path: /home/nikit/benchmarking-videos/hindi_male_suresh_srinivasan_1/clip004_hindi_suresh_srinivasan_1.mp4
+task_12:
+  audio_path: /home/nikit/benchmarking-videos/english_male_anand_mahindra_1/clip013_english_anand_mahindra_1.wav
+  result_name: video_clip001_hindi_suresh_srinivasan_1_audio_clip013_english_anand_mahindra_1.mp4
+  video_path: /home/nikit/benchmarking-videos/hindi_male_suresh_srinivasan_1/clip001_hindi_suresh_srinivasan_1.mp4
+task_13:
+  audio_path: /home/nikit/benchmarking-videos/hindi_female_akshata_deshpande_1/clip000_hindi_akshata_deshpande_1.wav
+  result_name: video_clip001_hindi_vanika_sangtani_1_audio_clip000_hindi_akshata_deshpande_1.mp4
+  video_path: /home/nikit/benchmarking-videos/hindi_female_vanika_sangtani_1/clip001_hindi_vanika_sangtani_1.mp4
+task_14:
+  audio_path: /home/nikit/benchmarking-videos/english_female_palki_sharma_1/clip005_english_palki_sharma_1.wav
+  result_name: video_clip014_hindi_vanika_sangtani_1_audio_clip005_english_palki_sharma_1.mp4
+  video_path: /home/nikit/benchmarking-videos/hindi_female_vanika_sangtani_1/clip014_hindi_vanika_sangtani_1.mp4
+task_15:
+  audio_path: /home/nikit/benchmarking-videos/english_female_rashmika_mandana_1/clip005_english_rashmika_mandana_1.wav
+  result_name: video_clip005_hindi_vanika_sangtani_1_audio_clip005_english_rashmika_mandana_1.mp4
+  video_path: /home/nikit/benchmarking-videos/hindi_female_vanika_sangtani_1/clip005_hindi_vanika_sangtani_1.mp4
+task_16:
+  audio_path: /home/nikit/benchmarking-videos/english_male_sundar_pichai_1/clip004_english_sundar_pichai_1.wav
+  result_name: video_clip011_pm_modi_1_audio_clip004_english_sundar_pichai_1.mp4
+  video_path: /home/nikit/benchmarking-videos/hindi_male_pm_modi_1/clip011_pm_modi_1.mp4
+task_17:
+  audio_path: /home/nikit/benchmarking-videos/hindi_male_suresh_srinivasan_1/clip005_hindi_suresh_srinivasan_1.wav
+  result_name: video_clip000_pm_modi_1_audio_clip005_hindi_suresh_srinivasan_1.mp4
+  video_path: /home/nikit/benchmarking-videos/hindi_male_pm_modi_1/clip000_pm_modi_1.mp4
+task_18:
+  audio_path: /home/nikit/benchmarking-videos/hindi_male_sujeet_govindani_1/clip012_hindi_sujeet_govindani_1.wav
+  result_name: video_clip015_pm_modi_1_audio_clip012_hindi_sujeet_govindani_1.mp4
+  video_path: /home/nikit/benchmarking-videos/hindi_male_pm_modi_1/clip015_pm_modi_1.mp4
+task_19:
+  audio_path: /home/nikit/benchmarking-videos/english_male_sjaishankar_1/clip022_english_sjaishankar_1.wav
+  result_name: video_clip043_pm_modi_1_audio_clip022_english_sjaishankar_1.mp4
+  video_path: /home/nikit/benchmarking-videos/hindi_male_pm_modi_1/clip043_pm_modi_1.mp4
+task_2:
+  audio_path: /home/nikit/benchmarking-videos/hindi_male_sujeet_govindani_1/clip009_hindi_sujeet_govindani_1.wav
+  result_name: video_clip029_english_sundar_pichai_1_audio_clip009_hindi_sujeet_govindani_1.mp4
+  video_path: /home/nikit/benchmarking-videos/english_male_sundar_pichai_1/clip029_english_sundar_pichai_1.mp4
+task_20:
+  audio_path: /home/nikit/benchmarking-videos/english_male_anand_mahindra_1/clip002_english_anand_mahindra_1.wav
+  result_name: video_clip029_pm_modi_1_audio_clip002_english_anand_mahindra_1.mp4
+  video_path: /home/nikit/benchmarking-videos/hindi_male_pm_modi_1/clip029_pm_modi_1.mp4
+task_21:
+  audio_path: /home/nikit/benchmarking-videos/hindi_female_akshata_deshpande_1/clip007_hindi_akshata_deshpande_1.wav
+  result_name: video_clip014_english_palki_sharma_1_audio_clip007_hindi_akshata_deshpande_1.mp4
+  video_path: /home/nikit/benchmarking-videos/english_female_palki_sharma_1/clip014_english_palki_sharma_1.mp4
+task_22:
+  audio_path: /home/nikit/benchmarking-videos/hindi_female_vanika_sangtani_1/clip003_hindi_vanika_sangtani_1.wav
+  result_name: video_clip008_english_palki_sharma_1_audio_clip003_hindi_vanika_sangtani_1.mp4
+  video_path: /home/nikit/benchmarking-videos/english_female_palki_sharma_1/clip008_english_palki_sharma_1.mp4
+task_23:
+  audio_path: /home/nikit/benchmarking-videos/english_female_rashmika_mandana_1/clip008_english_rashmika_mandana_1.wav
+  result_name: video_clip008_english_palki_sharma_1_audio_clip008_english_rashmika_mandana_1.mp4
+  video_path: /home/nikit/benchmarking-videos/english_female_palki_sharma_1/clip008_english_palki_sharma_1.mp4
+task_24:
+  audio_path: /home/nikit/benchmarking-videos/english_male_sundar_pichai_1/clip015_english_sundar_pichai_1.wav
+  result_name: video_clip006_hindi_sujeet_govindani_1_audio_clip015_english_sundar_pichai_1.mp4
+  video_path: /home/nikit/benchmarking-videos/hindi_male_sujeet_govindani_1/clip006_hindi_sujeet_govindani_1.mp4
+task_25:
+  audio_path: /home/nikit/benchmarking-videos/hindi_male_suresh_srinivasan_1/clip001_hindi_suresh_srinivasan_1.wav
+  result_name: video_clip001_hindi_sujeet_govindani_1_audio_clip001_hindi_suresh_srinivasan_1.mp4
+  video_path: /home/nikit/benchmarking-videos/hindi_male_sujeet_govindani_1/clip001_hindi_sujeet_govindani_1.mp4
+task_26:
+  audio_path: /home/nikit/benchmarking-videos/hindi_male_pm_modi_1/clip019_pm_modi_1.wav
+  result_name: video_clip006_hindi_sujeet_govindani_1_audio_clip019_pm_modi_1.mp4
+  video_path: /home/nikit/benchmarking-videos/hindi_male_sujeet_govindani_1/clip006_hindi_sujeet_govindani_1.mp4
+task_27:
+  audio_path: /home/nikit/benchmarking-videos/english_male_sjaishankar_1/clip022_english_sjaishankar_1.wav
+  result_name: video_clip013_hindi_sujeet_govindani_1_audio_clip022_english_sjaishankar_1.mp4
+  video_path: /home/nikit/benchmarking-videos/hindi_male_sujeet_govindani_1/clip013_hindi_sujeet_govindani_1.mp4
+task_28:
+  audio_path: /home/nikit/benchmarking-videos/english_male_anand_mahindra_1/clip002_english_anand_mahindra_1.wav
+  result_name: video_clip011_hindi_sujeet_govindani_1_audio_clip002_english_anand_mahindra_1.mp4
+  video_path: /home/nikit/benchmarking-videos/hindi_male_sujeet_govindani_1/clip011_hindi_sujeet_govindani_1.mp4
+task_29:
+  audio_path: /home/nikit/benchmarking-videos/english_male_sundar_pichai_1/clip015_english_sundar_pichai_1.wav
+  result_name: video_clip030_english_sjaishankar_1_audio_clip015_english_sundar_pichai_1.mp4
+  video_path: /home/nikit/benchmarking-videos/english_male_sjaishankar_1/clip030_english_sjaishankar_1.mp4
+task_3:
+  audio_path: /home/nikit/benchmarking-videos/english_male_sjaishankar_1/clip016_english_sjaishankar_1.wav
+  result_name: video_clip011_english_sundar_pichai_1_audio_clip016_english_sjaishankar_1.mp4
+  video_path: /home/nikit/benchmarking-videos/english_male_sundar_pichai_1/clip011_english_sundar_pichai_1.mp4
+task_30:
+  audio_path: /home/nikit/benchmarking-videos/hindi_male_suresh_srinivasan_1/clip004_hindi_suresh_srinivasan_1.wav
+  result_name: video_clip008_english_sjaishankar_1_audio_clip004_hindi_suresh_srinivasan_1.mp4
+  video_path: /home/nikit/benchmarking-videos/english_male_sjaishankar_1/clip008_english_sjaishankar_1.mp4
+task_31:
+  audio_path: /home/nikit/benchmarking-videos/hindi_male_pm_modi_1/clip025_pm_modi_1.wav
+  result_name: video_clip010_english_sjaishankar_1_audio_clip025_pm_modi_1.mp4
+  video_path: /home/nikit/benchmarking-videos/english_male_sjaishankar_1/clip010_english_sjaishankar_1.mp4
+task_32:
+  audio_path: /home/nikit/benchmarking-videos/hindi_male_sujeet_govindani_1/clip013_hindi_sujeet_govindani_1.wav
+  result_name: video_clip004_english_sjaishankar_1_audio_clip013_hindi_sujeet_govindani_1.mp4
+  video_path: /home/nikit/benchmarking-videos/english_male_sjaishankar_1/clip004_english_sjaishankar_1.mp4
+task_33:
+  audio_path: /home/nikit/benchmarking-videos/english_male_anand_mahindra_1/clip006_english_anand_mahindra_1.wav
+  result_name: video_clip022_english_sjaishankar_1_audio_clip006_english_anand_mahindra_1.mp4
+  video_path: /home/nikit/benchmarking-videos/english_male_sjaishankar_1/clip022_english_sjaishankar_1.mp4
+task_34:
+  audio_path: /home/nikit/benchmarking-videos/english_male_sundar_pichai_1/clip014_english_sundar_pichai_1.wav
+  result_name: video_clip013_english_anand_mahindra_1_audio_clip014_english_sundar_pichai_1.mp4
+  video_path: /home/nikit/benchmarking-videos/english_male_anand_mahindra_1/clip013_english_anand_mahindra_1.mp4
+task_35:
+  audio_path: /home/nikit/benchmarking-videos/hindi_male_suresh_srinivasan_1/clip001_hindi_suresh_srinivasan_1.wav
+  result_name: video_clip006_english_anand_mahindra_1_audio_clip001_hindi_suresh_srinivasan_1.mp4
+  video_path: /home/nikit/benchmarking-videos/english_male_anand_mahindra_1/clip006_english_anand_mahindra_1.mp4
+task_36:
+  audio_path: /home/nikit/benchmarking-videos/hindi_male_pm_modi_1/clip003_pm_modi_1.wav
+  result_name: video_clip006_english_anand_mahindra_1_audio_clip003_pm_modi_1.mp4
+  video_path: /home/nikit/benchmarking-videos/english_male_anand_mahindra_1/clip006_english_anand_mahindra_1.mp4
+task_37:
+  audio_path: /home/nikit/benchmarking-videos/hindi_male_sujeet_govindani_1/clip009_hindi_sujeet_govindani_1.wav
+  result_name: video_clip000_english_anand_mahindra_1_audio_clip009_hindi_sujeet_govindani_1.mp4
+  video_path: /home/nikit/benchmarking-videos/english_male_anand_mahindra_1/clip000_english_anand_mahindra_1.mp4
+task_38:
+  audio_path: /home/nikit/benchmarking-videos/english_male_sjaishankar_1/clip009_english_sjaishankar_1.wav
+  result_name: video_clip008_english_anand_mahindra_1_audio_clip009_english_sjaishankar_1.mp4
+  video_path: /home/nikit/benchmarking-videos/english_male_anand_mahindra_1/clip008_english_anand_mahindra_1.mp4
+task_39:
+  audio_path: /home/nikit/benchmarking-videos/hindi_female_akshata_deshpande_1/clip000_hindi_akshata_deshpande_1.wav
+  result_name: video_clip009_english_rashmika_mandana_1_audio_clip000_hindi_akshata_deshpande_1.mp4
+  video_path: /home/nikit/benchmarking-videos/english_female_rashmika_mandana_1/clip009_english_rashmika_mandana_1.mp4
+task_4:
+  audio_path: /home/nikit/benchmarking-videos/english_male_anand_mahindra_1/clip002_english_anand_mahindra_1.wav
+  result_name: video_clip000_english_sundar_pichai_1_audio_clip002_english_anand_mahindra_1.mp4
+  video_path: /home/nikit/benchmarking-videos/english_male_sundar_pichai_1/clip000_english_sundar_pichai_1.mp4
+task_40:
+  audio_path: /home/nikit/benchmarking-videos/hindi_female_vanika_sangtani_1/clip012_hindi_vanika_sangtani_1.wav
+  result_name: video_clip011_english_rashmika_mandana_1_audio_clip012_hindi_vanika_sangtani_1.mp4
+  video_path: /home/nikit/benchmarking-videos/english_female_rashmika_mandana_1/clip011_english_rashmika_mandana_1.mp4
+task_41:
+  audio_path: /home/nikit/benchmarking-videos/english_female_palki_sharma_1/clip004_english_palki_sharma_1.wav
+  result_name: video_clip004_english_rashmika_mandana_1_audio_clip004_english_palki_sharma_1.mp4
+  video_path: /home/nikit/benchmarking-videos/english_female_rashmika_mandana_1/clip004_english_rashmika_mandana_1.mp4
+task_5:
+  audio_path: /home/nikit/benchmarking-videos/hindi_female_vanika_sangtani_1/clip003_hindi_vanika_sangtani_1.wav
+  result_name: video_clip007_hindi_akshata_deshpande_1_audio_clip003_hindi_vanika_sangtani_1.mp4
+  video_path: /home/nikit/benchmarking-videos/hindi_female_akshata_deshpande_1/clip007_hindi_akshata_deshpande_1.mp4
+task_6:
+  audio_path: /home/nikit/benchmarking-videos/english_female_palki_sharma_1/clip008_english_palki_sharma_1.wav
+  result_name: video_clip006_hindi_akshata_deshpande_1_audio_clip008_english_palki_sharma_1.mp4
+  video_path: /home/nikit/benchmarking-videos/hindi_female_akshata_deshpande_1/clip006_hindi_akshata_deshpande_1.mp4
+task_7:
+  audio_path: /home/nikit/benchmarking-videos/english_female_rashmika_mandana_1/clip005_english_rashmika_mandana_1.wav
+  result_name: video_clip005_hindi_akshata_deshpande_1_audio_clip005_english_rashmika_mandana_1.mp4
+  video_path: /home/nikit/benchmarking-videos/hindi_female_akshata_deshpande_1/clip005_hindi_akshata_deshpande_1.mp4
+task_8:
+  audio_path: /home/nikit/benchmarking-videos/english_male_sundar_pichai_1/clip000_english_sundar_pichai_1.wav
+  result_name: video_clip000_hindi_suresh_srinivasan_1_audio_clip000_english_sundar_pichai_1.mp4
+  video_path: /home/nikit/benchmarking-videos/hindi_male_suresh_srinivasan_1/clip000_hindi_suresh_srinivasan_1.mp4
+task_9:
+  audio_path: /home/nikit/benchmarking-videos/hindi_male_pm_modi_1/clip025_pm_modi_1.wav
+  result_name: video_clip001_hindi_suresh_srinivasan_1_audio_clip025_pm_modi_1.mp4
+  video_path: /home/nikit/benchmarking-videos/hindi_male_suresh_srinivasan_1/clip001_hindi_suresh_srinivasan_1.mp4

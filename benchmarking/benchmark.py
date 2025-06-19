@@ -3,8 +3,11 @@ from identity_eval import compare_identity as identity_score
 from syncnet_eval import main as audio_lip_sync_score
 import human_feedback as human_score
 import numpy as np
+import sys
+import os, json
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
 from scripts.inference import main as generate_animation
-import os, json, sys
 from os.path import isdir, dirname, basename, exists, join
 import glob
 import argparse
@@ -23,40 +26,47 @@ class Benchmark:
         self.prepare_video_audio_pairs()
 
     def prepare_video_audio_pairs(self):
-        dirs = os.listdir(self.source_path)
         self.video_audio_pairs = []
         self.ground_truth = []
+        
+        alread_passed_pairs = []
+
+        def make_video_audio_pairs(d1, d2):
+            videos = glob.glob(join(d1, '*'))
+            audios = glob.glob(join(d2, '*'))
+            video_path = np.random.choice(list(filter(lambda x: x.endswith('.mp4'), videos)))
+            audio_path = np.random.choice(list(filter(lambda x: x.endswith('.wav'), audios)))
+            
+            self.ground_truth.append(audio_path.replace('.wav', '.mp4'))
+            self.video_audio_pairs.append([str(video_path), str(audio_path)])
+        
+        dirs = glob.glob(join(self.source_path, '*'))
+        
+        print(f'Video directories at {self.source_path}: {dirs}')
+        dir_pairs = []
 
         for d in dirs:
-            dpath = join(self.source_path, d)
-            if isdir(dpath):
-                videos_audios = os.listdir(dpath)
-                videos = list(filter(lambda x: True if x.endswith('.mp4') else False), videos_audios)
-                audios = list(filter(lambda x: True if x.endswith('.wav') else False), videos_audios)
-                
-                def pair():
-                    v = np.random.choice(videos)
-                    a = np.random.choice(audios)
-                    if v.replace('.mp4', '') == a.replace('.wav', ''):
-                        v, a = pair()
-                    
-                    self.ground_truth.append(join(dpath, a.replace('.wav', '.mp4')))
-                    return v, a
-                video, audio = pair()
-
-                self.video_audio_pairs.append([join(dpath, video), join(dpath, audio)])
+            x = [[d, i] for i in dirs if i != d and basename(i).split('_')[1] == basename(d).split('_')[1]]
+            dir_pairs.extend(x)
+        
+        
+        for d1, d2 in dir_pairs:
+            if [d1, d2] in alread_passed_pairs:
+                continue
+            make_video_audio_pairs(d1, d2)
+            alread_passed_pairs.append([d1, d2])
 
 
         c = {
             f"task_{i}":{
                 "video_path": x[0],
                 "audio_path":x[1],
-                "result_name": basename(x[1]).replace('.wav', '.mp4')
+                "result_name": 'video_{}_audio_{}'.format(basename(x[0]).replace('.mp4',''), basename(x[1]).replace('.wav', '.mp4'))
             } for i, x in enumerate(self.video_audio_pairs)
         }
-
-        with open(self.inference_args.inference_config, 'w+') as file:
-            yaml.dump(c, file, default_flow_style= False, sort_keys=False)
+        
+        with open(self.inference_args.inference_config, 'w') as file:
+            yaml.dump(c, file, default_flow_style=False, sort_keys=False)
         print(f'Finish writing task to yaml file: {json.dumps(c, indent=4)}')
         return self.video_audio_pairs
     
@@ -69,19 +79,19 @@ class Benchmark:
         # self.version_arg = args.version_arg
         #syncnet checkpoint
         #syncnet config
-
-        print('Starting inference on benchmarking data. Finetuned model')
-        self.inference_args.result_dir = self.inference_args.result_dir_finetuned 
-        generate_animation(self.inference_args)
-        self.benchmarking(model_stage = 'finetuned')
-
-        print('Starting inference on benchmarking data. Original Model')
-        self.inference_args.result_dir = self.inference_args.result_dir_original
-        generate_animation(self.inference_args)
-        self.benchmarking(model_stage='original')
-                
+        if self.inference_args.stage == 'finetuned':
+            print('Starting inference on benchmarking data. Finetuned model')
+            self.inference_args.result_dir = self.inference_args.result_dir_finetuned 
+            generate_animation(self.inference_args)
+            self.benchmarking(model_stage = 'finetuned')
+        else:
+            print('Starting inference on benchmarking data. Original Model')
+            self.inference_args.result_dir = self.inference_args.result_dir_original
+            generate_animation(self.inference_args)
+            self.benchmarking(model_stage='original')
+                    
     
-    def benchmarking(self, model_stage = 'finetuned' ):
+    def benchmarking(self, model_stage = 'original' ):
         results_path = join(self.inference_args.result_dir, self.inference_args.version)
         self.generated_videos = glob.glob(join(results_path, '*.mp4'))
         
@@ -123,7 +133,10 @@ if __name__ == '__main__':
     parser.add_argument("--unet_model_path", type=str, default="./models/musetalkV15/unet.pth", help="Path to UNet model weights")
     parser.add_argument("--result_dir_finetuned", default='./results_finetuned', help="Directory for output results")
     parser.add_argument("--result_dir_original", default='./results_original', help="Directory for output results")
-    
+    parser.add_argument("--stage", type=str, default='original', help="Stage to select for getting output from model.")
+    parser.add_argument("--source_path", required=True)
+    parser.add_argument("--force_generate", type=bool, default=False, help="Force generate video even if already exists.")
+
 
     parser.add_argument("--extra_margin", type=int, default=10, help="Extra margin for face cropping")
     parser.add_argument("--fps", type=int, default=25, help="Video frames per second")
