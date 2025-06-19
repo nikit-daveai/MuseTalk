@@ -136,7 +136,7 @@ def main(cfg):
     if cfg.resume_from_checkpoint:
         resume_dir = save_dir
         dirs = os.listdir(resume_dir)
-        dirs = [d for d in dirs if d.startswith("checkpoint")]
+        dirs = [d for d in dirs if d.startswith("unet")]
         dirs = sorted(dirs, key=lambda x: int(x.split("-")[1]))
         if len(dirs) > 0:
             path = dirs[-1]
