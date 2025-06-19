@@ -1,5 +1,6 @@
 import benchmarking_utils as utils
 from identity_eval import compare_identity as identity_score
+from identity_eval import *
 from syncnet_eval import main as audio_lip_sync_score
 import human_feedback as human_score
 import numpy as np
@@ -7,7 +8,7 @@ import sys
 import os, json
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
-from scripts.inference import main as generate_animation
+#from scripts.inference import main as generate_animation
 from os.path import isdir, dirname, basename, exists, join
 import glob
 import argparse
@@ -15,6 +16,7 @@ import yaml
 import csv
 import warnings
 import subprocess
+import pandas as pd
 
 warnings.filterwarnings('ignore')
 
@@ -23,7 +25,6 @@ class Benchmark:
     def __init__(self, source_path, args):
         self.source_path = source_path
         self.inference_args = args
-        self.prepare_video_audio_pairs()
 
     def prepare_video_audio_pairs(self):
         self.video_audio_pairs = []
@@ -92,32 +93,71 @@ class Benchmark:
                     
     
     def benchmarking(self, model_stage = 'original' ):
-        results_path = join(self.inference_args.result_dir, self.inference_args.version)
-        self.generated_videos = glob.glob(join(results_path, '*.mp4'))
+        #results_path = join(self.inference_args.result_dir, self.inference_args.version)
+
+        #test:
+        results_path = '/home/nikit/benchmarking-videos'
+        self.generated_videos = glob.glob(join('/home/nikit/benchmarking-videos/hindi_male_pm_modi_1', '*.mp4'))
+        self.ground_truth = glob.glob(join("/home/nikit/benchmarking-videos/hindi_male_suresh_srinivasan_1", '*.mp4'))
         
-        headers = ['index', 'video_name', 'identity_score', 'sync_score', 'human_feedback']
-        with open(join(results_path, f'{model_stage}_benchmarking.csv'), 'w+') as csv_out:
-            csv_object = csv.writer(csv_out)
-            csv_object.writerow(headers)
+
+
+
+        score_csv_path = join(results_path, f'{model_stage}_benchmarking.csv')
+        
+        score_data = {
+            "ground_truth_video_name": [],
+            "generate_video_name": [],
+            "lip_sync_score":[],
+            "cosine_similarity":[],
+            "psnr":[],
+            "ssim":[],
+            "lpips":[],
+            "fid":[],
+            "compare_landmarks":[],
+            "compare_emotions":[],
+            "flicker_score_ground_truth":[],
+            "flicker_score_gen_video":[],
+            "ptical_flow_consistency_ground_truth":[],
+            "ptical_flow_consistency_gen_video":[]
             
-            i = 1
-            for ref, gen in zip(self.ground_truth, self.generated_videos):
-                row = [i, basename(self.ground_truth[i-1])]
-                print(f'Calculating identity score for {ref} with generated video {gen}')
-                row.append(identity_score(ref, gen))
+        }
 
-                print(f"Calculating lip sync score for generated {gen} with audio {ref.replace('.mp4', '.wav')}")
-                row.append(audio_lip_sync_score(gen , ref.replace('.mp4', '.wav'), self.inference_args))
-                row.append(0)
+        for ref_video, gen_video in zip(self.ground_truth, self.generated_videos):
+            try:
+                score_data['ground_truth_video_name'].append(basename(ref_video))
+                score_data['generate_video_name'].append(basename(gen_video))
+                score_data['lip_sync_score'].append(0)#append(audio_lip_sync_score(ref_video.replace('.mp4','.wav'), gen_video, self.inference_args))
+                score_data['cosine_similarity'].append(identity_score(ref_video, gen_video))
+                score_data['compare_emotions'].append(compare_emotions(ref_video, gen_video))
 
-                csv_object.writerow(row)
-                i+=1
+                ref_frames_dir = extract_video_frames(ref_video)
+                gen_frames_dir = extract_video_frames(gen_video)
+
+                score_data['fid'].append(compute_fid(ref_frames_dir, gen_frames_dir))
+                score_data['flicker_score_ground_truth'].append(compute_optical_flow_consistency(ref_frames_dir))
+                score_data['flicker_score_gen_video'].append(compute_optical_flow_consistency(gen_frames_dir))
+                score_data['ptical_flow_consistency_ground_truth'].append(compute_optical_flow_consistency(ref_frames_dir))
+                score_data['ptical_flow_consistency_gen_video'].append(compute_optical_flow_consistency(gen_video))
+
+                scores = average_score(ref_frames_dir, gen_frames_dir)
+                for key, value in scores.items():
+                    score_data[key].append(np.average(np.array(value)))
+                    print(f'Average score for {key}:  {score_data[key]}')
+            except Exception as e:
+                print(f'Got an error while calculating {ref_video} and {gen_video} score...')
+                continue
+
+
+        df = pd.DataFrame(score_data)
+        print(f'Sample rows: {df.head(4)}')
+        df.to_csv(score_csv_path)
         print(f'Benchmarking done on {model_stage} model')
 
 
 def main(args):
     benchmark = Benchmark(args.source_path, args)
-    benchmark.inferenace()
+    benchmark.benchmarking()
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()

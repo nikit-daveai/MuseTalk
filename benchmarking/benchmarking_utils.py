@@ -7,6 +7,8 @@ import numpy as np
 import cv2
 import os
 from insightface.app import FaceAnalysis
+import torch
+
 
 FPS = 25
 
@@ -114,21 +116,40 @@ def load_audio_mel(audio_path, sr=16000, hop_length=160, win_length=400, n_mels=
     mel = librosa.power_to_db(mel, ref=np.max).T  # shape: (T, n_mels)
     return mel
 
-def get_frame_audio_pairs(video_path, audio_path):
-    # Load mel spectrogram
-    mel = load_audio_mel(audio_path)
 
-    # Prepare face detector
+def extract_video_frames(video_path, max_frames=None, every_nth=5):
+    cap = cv2.VideoCapture(video_path)
+    frames = []
+    count = 0
+    while True:
+        ret, frame = cap.read()
+        if not ret:
+            break
+        if count % every_nth == 0:
+            frames.append(frame)
+            if max_frames and len(frames) >= max_frames:
+                break
+        count += 1
+    cap.release()
+    return frames
+
+
+def get_frame_audio_pairs(video_path, audio_path, num_frames=16, target_fps=25):
+    """
+    Extracts face frame stacks and matching mel-spectrogram chunks.
+    Returns tensors ready for model input.
+    """
+    device = 'cuda' if torch.cuda.is_available() else 'cpu'
+    mel = load_audio_mel(audio_path)  # still a NumPy array for now
+
     face_detector = FaceAnalysis(name='buffalo_l')
     face_detector.prepare(ctx_id=0)
 
-    # Read video frames
     cap = cv2.VideoCapture(video_path)
     fps = cap.get(cv2.CAP_PROP_FPS)
     assert fps > 0, "Could not determine video FPS"
 
-    frames = []
-    mels = []
+    all_faces = []
     frame_idx = 0
 
     while True:
@@ -136,38 +157,53 @@ def get_frame_audio_pairs(video_path, audio_path):
         if not ret:
             break
 
-        if frame_idx % int(fps / FPS) != 0:
+        if frame_idx % int(fps / target_fps) != 0:
             frame_idx += 1
-            continue  # downsample to 25 fps
+            continue  
 
         faces = face_detector.get(frame)
         if not faces:
             frame_idx += 1
             continue
 
-        # Crop and resize face
         x1, y1, x2, y2 = faces[0].bbox.astype(int)
         face = frame[y1:y2, x1:x2]
         if face.size == 0:
             frame_idx += 1
             continue
-        face = cv2.resize(face, (96, 96))
+        #face = cv2.resize(face, (256, 256))
 
-        # Align mel index (assuming 80 mel frames/sec, 25 FPS video)
-        mel_idx = frame_idx * 4
-        if mel_idx + 16 > len(mel):
-            break
-
-        mel_chunk = mel[mel_idx : mel_idx + 16]
-
-        frames.append(face)
-        mels.append(mel_chunk)
+        all_faces.append(face)
         frame_idx += 1
 
     cap.release()
-    return frames, mels
 
-    
+    if len(all_faces) < num_frames:
+        print(f"[WARN] Not enough frames ({len(all_faces)}). Skipping.")
+        return [], []
+
+    frames = []
+    mels = []
+
+    for i in range(len(all_faces) - num_frames + 1):
+        frame_window = all_faces[i:i + num_frames]
+
+        # Stack and convert to PyTorch tensor: [num_frames, 3, 96, 96]
+        stacked = torch.from_numpy(np.stack(frame_window)).permute(0, 3, 1, 2).float() / 255.0
+        stacked = stacked.reshape(-1, 96, 96)  # [48, 96, 96]
+        frame_tensor = stacked.unsqueeze(0).to(device)  # [1, 48, 96, 96]
+        frames.append(frame_tensor)
+
+        # Prepare mel tensor
+        mel_idx = i * 4
+        if mel_idx + 16 > len(mel):
+            break
+        mel_chunk = mel[mel_idx : mel_idx + 16]
+        mel_tensor = torch.from_numpy(mel_chunk).unsqueeze(0).unsqueeze(0).float().to(device)  # [1, 1, 16, 80]
+        mels.append(mel_tensor)
+
+    print(f"[INFO] Extracted {len(frames)} frame stacks and {len(mels)} mel chunks")
+    return frames, mels
 
 
 if __name__ == "__main__":

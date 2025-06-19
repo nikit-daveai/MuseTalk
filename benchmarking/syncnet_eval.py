@@ -270,23 +270,17 @@ class SyncEvaluator:
     def evaluate(self, video_path: str, audio_path: str):
         frames, mels = get_frame_audio_pairs(video_path, audio_path)
         scores = []
-
-        with torch.no_grad():
-            for frame, mel in zip(frames, mels):
-                frame_tensor = torch.FloatTensor(frame / 255.).permute(2, 0, 1).unsqueeze(0).to(self.device)
-                mel_tensor = torch.FloatTensor(mel).unsqueeze(0).unsqueeze(0).to(self.device)
-                gt_frames = rearrange(frame_tensor, 'b f c h w-> b (f c) h w')
-                height = gt_frames.shape[2]
-                frame_tensor = gt_frames[:, :, height // 2:, :]
-                frame_embedding = self.model.get_image_embed(frame_tensor)
-                audio_embedding = self.model.get_audio_embed(mel_tensor)
+        with torch.no_grad():            
+            for frames_tensor, mels_tensor in zip(frames, mels):
+                frame_embedding = self.model.get_image_embed(frames_tensor)
+                audio_embedding = self.model.get_audio_embed(mels_tensor)
 
                 score = F.cosine_similarity(frame_embedding, audio_embedding).item()
                 scores.append(score)
 
         return float(np.mean(scores))
 
-def main(video, audio, args):
+def main(audio, video, args):
     evaluator = SyncEvaluator(args.checkpoint, args.syncnet_config)
     score = evaluator.evaluate(video, audio)
 

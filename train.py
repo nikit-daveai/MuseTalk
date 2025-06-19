@@ -137,12 +137,19 @@ def main(cfg):
         resume_dir = save_dir
         dirs = os.listdir(resume_dir)
         dirs = [d for d in dirs if d.startswith("unet")]
-        dirs = sorted(dirs, key=lambda x: int(x.split("-")[1]))
+        dirs = sorted(dirs, key=lambda x: int(x.split("-")[1].split('.')[0]))
         if len(dirs) > 0:
             path = dirs[-1]
-            accelerator.load_state(os.path.join(resume_dir, path))
+            folder = path.split('.')[0]
+            if not os.path.isdir(os.path.join(resume_dir, folder)):
+                os.makedirs(os.path.join(resume_dir, folder))
+            os.system(f"copy {os.path.join(resume_dir, path)} {os.path.join(resume_dir, folder)}")
+            #accelerator.load_state(os.path.join(resume_dir, folder))
+
+            unrap_model = accelerator.unwrap_model(model_dict['net'])
+            unrap_model.load_state_dict(torch.load(os.path.join(resume_dir, path)))
             accelerator.print(f"Resuming from checkpoint {path}")
-            global_step = int(path.split("-")[1])
+            global_step = int(path.split("-")[1].split('.')[0])
             first_epoch = global_step // num_update_steps_per_epoch
             resume_step = global_step % num_update_steps_per_epoch
 
