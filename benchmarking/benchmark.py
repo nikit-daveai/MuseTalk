@@ -8,7 +8,7 @@ import sys
 import os, json
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
-#from scripts.inference import main as generate_animation
+from scripts.inference import main as generate_animation
 from os.path import isdir, dirname, basename, exists, join
 import glob
 import argparse
