@@ -25,3 +25,4 @@ mediapipe
 lpips
 deepface
 insightface
+onnxruntime
