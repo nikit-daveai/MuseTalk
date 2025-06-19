@@ -19,3 +19,9 @@ imageio[ffmpeg]
 omegaconf
 ffmpeg-python
 moviepy
+yt_dlp
+pytorch_fid
+mediapipe
+lpips
+deepface
+insightface
