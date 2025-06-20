@@ -20,10 +20,10 @@ num_backward_frames: 16  # Number of frames to use for backward pass in SyncNet
 
 data:
   dataset_key: "dave"  # Dataset to use for training
-  train_bs: 1  # Training batch size (actual batch size is train_bs*n_sample_frames)
+  train_bs: 2  # Training batch size (actual batch size is train_bs*n_sample_frames)
   image_size: 256  # Size of input images
   n_sample_frames: 16  # Number of frames to sample per batch
-  num_workers: 4  # Number of data loading workers
+  num_workers: 8  # Number of data loading workers
   audio_padding_length_left: 2  # Left padding length for audio features
   audio_padding_length_right: 2  # Right padding length for audio features
   sample_method: pose_similarity_and_mouth_dissimilarity  # Method for sampling frames
@@ -61,9 +61,9 @@ discriminator_train_params:
   start_gan: 100  # Step to start GAN training
 
 solver:
-  gradient_accumulation_steps: 8  # Number of steps for gradient accumulation
+  gradient_accumulation_steps: 16  # Number of steps for gradient accumulation
   uncond_steps: 10  # Number of unconditional steps
-  mixed_precision: 'fp16'  # Precision mode for training
+  mixed_precision: 'fp32'  # Precision mode for training
   enable_xformers_memory_efficient_attention: True  # Whether to use memory efficient attention
   gradient_checkpointing: True  # Whether to use gradient checkpointing
   max_train_steps: 5000  # Maximum number of training steps
@@ -86,4 +86,3 @@ checkpointing_steps: 500  # Number of steps between checkpoints
 val_freq: 500  # Frequency of validation
 
 seed: 41  # Random seed for reproducibility
-
