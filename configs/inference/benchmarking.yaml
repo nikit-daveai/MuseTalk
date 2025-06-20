@@ -1,0 +1,168 @@
+task_0:
+  video_path: /MuseTalk/benchmarking_videos/english_female_palki_sharma_1/clip015_english_palki_sharma_1.mp4
+  audio_path: /MuseTalk/benchmarking_videos/english_female_rashmika_mandana_1/clip004_english_rashmika_mandana_1.wav
+  result_name: video_clip015_english_palki_sharma_1_audio_clip004_english_rashmika_mandana_1.mp4
+task_1:
+  video_path: /MuseTalk/benchmarking_videos/english_female_palki_sharma_1/clip006_english_palki_sharma_1.mp4
+  audio_path: /MuseTalk/benchmarking_videos/hindi_female_akshata_deshpande_1/clip007_hindi_akshata_deshpande_1.wav
+  result_name: video_clip006_english_palki_sharma_1_audio_clip007_hindi_akshata_deshpande_1.mp4
+task_2:
+  video_path: /MuseTalk/benchmarking_videos/english_female_palki_sharma_1/clip011_english_palki_sharma_1.mp4
+  audio_path: /MuseTalk/benchmarking_videos/hindi_female_vanika_sangtani_1/clip012_hindi_vanika_sangtani_1.wav
+  result_name: video_clip011_english_palki_sharma_1_audio_clip012_hindi_vanika_sangtani_1.mp4
+task_3:
+  video_path: /MuseTalk/benchmarking_videos/english_female_rashmika_mandana_1/clip006_english_rashmika_mandana_1.mp4
+  audio_path: /MuseTalk/benchmarking_videos/english_female_palki_sharma_1/clip012_english_palki_sharma_1.wav
+  result_name: video_clip006_english_rashmika_mandana_1_audio_clip012_english_palki_sharma_1.mp4
+task_4:
+  video_path: /MuseTalk/benchmarking_videos/english_female_rashmika_mandana_1/clip011_english_rashmika_mandana_1.mp4
+  audio_path: /MuseTalk/benchmarking_videos/hindi_female_akshata_deshpande_1/clip007_hindi_akshata_deshpande_1.wav
+  result_name: video_clip011_english_rashmika_mandana_1_audio_clip007_hindi_akshata_deshpande_1.mp4
+task_5:
+  video_path: /MuseTalk/benchmarking_videos/english_female_rashmika_mandana_1/clip009_english_rashmika_mandana_1.mp4
+  audio_path: /MuseTalk/benchmarking_videos/hindi_female_vanika_sangtani_1/clip012_hindi_vanika_sangtani_1.wav
+  result_name: video_clip009_english_rashmika_mandana_1_audio_clip012_hindi_vanika_sangtani_1.mp4
+task_6:
+  video_path: /MuseTalk/benchmarking_videos/english_male_anand_mahindra_1/clip010_english_anand_mahindra_1.mp4
+  audio_path: /MuseTalk/benchmarking_videos/english_male_sjaishankar_1/clip016_english_sjaishankar_1.wav
+  result_name: video_clip010_english_anand_mahindra_1_audio_clip016_english_sjaishankar_1.mp4
+task_7:
+  video_path: /MuseTalk/benchmarking_videos/english_male_anand_mahindra_1/clip002_english_anand_mahindra_1.mp4
+  audio_path: /MuseTalk/benchmarking_videos/english_male_sundar_pichai_1/clip004_english_sundar_pichai_1.wav
+  result_name: video_clip002_english_anand_mahindra_1_audio_clip004_english_sundar_pichai_1.mp4
+task_8:
+  video_path: /MuseTalk/benchmarking_videos/english_male_anand_mahindra_1/clip002_english_anand_mahindra_1.mp4
+  audio_path: /MuseTalk/benchmarking_videos/hindi_male_pm_modi_1/clip003_pm_modi_1.wav
+  result_name: video_clip002_english_anand_mahindra_1_audio_clip003_pm_modi_1.mp4
+task_9:
+  video_path: /MuseTalk/benchmarking_videos/english_male_anand_mahindra_1/clip000_english_anand_mahindra_1.mp4
+  audio_path: /MuseTalk/benchmarking_videos/hindi_male_sujeet_govindani_1/clip012_hindi_sujeet_govindani_1.wav
+  result_name: video_clip000_english_anand_mahindra_1_audio_clip012_hindi_sujeet_govindani_1.mp4
+task_10:
+  video_path: /MuseTalk/benchmarking_videos/english_male_anand_mahindra_1/clip010_english_anand_mahindra_1.mp4
+  audio_path: /MuseTalk/benchmarking_videos/hindi_male_suresh_srinivasan_1/clip004_hindi_suresh_srinivasan_1.wav
+  result_name: video_clip010_english_anand_mahindra_1_audio_clip004_hindi_suresh_srinivasan_1.mp4
+task_11:
+  video_path: /MuseTalk/benchmarking_videos/english_male_sjaishankar_1/clip009_english_sjaishankar_1.mp4
+  audio_path: /MuseTalk/benchmarking_videos/english_male_anand_mahindra_1/clip010_english_anand_mahindra_1.wav
+  result_name: video_clip009_english_sjaishankar_1_audio_clip010_english_anand_mahindra_1.mp4
+task_12:
+  video_path: /MuseTalk/benchmarking_videos/english_male_sjaishankar_1/clip023_english_sjaishankar_1.mp4
+  audio_path: /MuseTalk/benchmarking_videos/english_male_sundar_pichai_1/clip004_english_sundar_pichai_1.wav
+  result_name: video_clip023_english_sjaishankar_1_audio_clip004_english_sundar_pichai_1.mp4
+task_13:
+  video_path: /MuseTalk/benchmarking_videos/english_male_sjaishankar_1/clip015_english_sjaishankar_1.mp4
+  audio_path: /MuseTalk/benchmarking_videos/hindi_male_pm_modi_1/clip019_pm_modi_1.wav
+  result_name: video_clip015_english_sjaishankar_1_audio_clip019_pm_modi_1.mp4
+task_14:
+  video_path: /MuseTalk/benchmarking_videos/english_male_sjaishankar_1/clip023_english_sjaishankar_1.mp4
+  audio_path: /MuseTalk/benchmarking_videos/hindi_male_sujeet_govindani_1/clip002_hindi_sujeet_govindani_1.wav
+  result_name: video_clip023_english_sjaishankar_1_audio_clip002_hindi_sujeet_govindani_1.mp4
+task_15:
+  video_path: /MuseTalk/benchmarking_videos/english_male_sjaishankar_1/clip027_english_sjaishankar_1.mp4
+  audio_path: /MuseTalk/benchmarking_videos/hindi_male_suresh_srinivasan_1/clip004_hindi_suresh_srinivasan_1.wav
+  result_name: video_clip027_english_sjaishankar_1_audio_clip004_hindi_suresh_srinivasan_1.mp4
+task_16:
+  video_path: /MuseTalk/benchmarking_videos/english_male_sundar_pichai_1/clip028_english_sundar_pichai_1.mp4
+  audio_path: /MuseTalk/benchmarking_videos/english_male_anand_mahindra_1/clip006_english_anand_mahindra_1.wav
+  result_name: video_clip028_english_sundar_pichai_1_audio_clip006_english_anand_mahindra_1.mp4
+task_17:
+  video_path: /MuseTalk/benchmarking_videos/english_male_sundar_pichai_1/clip000_english_sundar_pichai_1.mp4
+  audio_path: /MuseTalk/benchmarking_videos/english_male_sjaishankar_1/clip016_english_sjaishankar_1.wav
+  result_name: video_clip000_english_sundar_pichai_1_audio_clip016_english_sjaishankar_1.mp4
+task_18:
+  video_path: /MuseTalk/benchmarking_videos/english_male_sundar_pichai_1/clip027_english_sundar_pichai_1.mp4
+  audio_path: /MuseTalk/benchmarking_videos/hindi_male_pm_modi_1/clip013_pm_modi_1.wav
+  result_name: video_clip027_english_sundar_pichai_1_audio_clip013_pm_modi_1.mp4
+task_19:
+  video_path: /MuseTalk/benchmarking_videos/english_male_sundar_pichai_1/clip003_english_sundar_pichai_1.mp4
+  audio_path: /MuseTalk/benchmarking_videos/hindi_male_sujeet_govindani_1/clip008_hindi_sujeet_govindani_1.wav
+  result_name: video_clip003_english_sundar_pichai_1_audio_clip008_hindi_sujeet_govindani_1.mp4
+task_20:
+  video_path: /MuseTalk/benchmarking_videos/english_male_sundar_pichai_1/clip007_english_sundar_pichai_1.mp4
+  audio_path: /MuseTalk/benchmarking_videos/hindi_male_suresh_srinivasan_1/clip003_hindi_suresh_srinivasan_1.wav
+  result_name: video_clip007_english_sundar_pichai_1_audio_clip003_hindi_suresh_srinivasan_1.mp4
+task_21:
+  video_path: /MuseTalk/benchmarking_videos/hindi_female_akshata_deshpande_1/clip000_hindi_akshata_deshpande_1.mp4
+  audio_path: /MuseTalk/benchmarking_videos/english_female_palki_sharma_1/clip005_english_palki_sharma_1.wav
+  result_name: video_clip000_hindi_akshata_deshpande_1_audio_clip005_english_palki_sharma_1.mp4
+task_22:
+  video_path: /MuseTalk/benchmarking_videos/hindi_female_akshata_deshpande_1/clip003_hindi_akshata_deshpande_1.mp4
+  audio_path: /MuseTalk/benchmarking_videos/english_female_rashmika_mandana_1/clip007_english_rashmika_mandana_1.wav
+  result_name: video_clip003_hindi_akshata_deshpande_1_audio_clip007_english_rashmika_mandana_1.mp4
+task_23:
+  video_path: /MuseTalk/benchmarking_videos/hindi_female_akshata_deshpande_1/clip007_hindi_akshata_deshpande_1.mp4
+  audio_path: /MuseTalk/benchmarking_videos/hindi_female_vanika_sangtani_1/clip011_hindi_vanika_sangtani_1.wav
+  result_name: video_clip007_hindi_akshata_deshpande_1_audio_clip011_hindi_vanika_sangtani_1.mp4
+task_24:
+  video_path: /MuseTalk/benchmarking_videos/hindi_female_vanika_sangtani_1/clip000_hindi_vanika_sangtani_1.mp4
+  audio_path: /MuseTalk/benchmarking_videos/english_female_palki_sharma_1/clip004_english_palki_sharma_1.wav
+  result_name: video_clip000_hindi_vanika_sangtani_1_audio_clip004_english_palki_sharma_1.mp4
+task_25:
+  video_path: /MuseTalk/benchmarking_videos/hindi_female_vanika_sangtani_1/clip004_hindi_vanika_sangtani_1.mp4
+  audio_path: /MuseTalk/benchmarking_videos/english_female_rashmika_mandana_1/clip008_english_rashmika_mandana_1.wav
+  result_name: video_clip004_hindi_vanika_sangtani_1_audio_clip008_english_rashmika_mandana_1.mp4
+task_26:
+  video_path: /MuseTalk/benchmarking_videos/hindi_female_vanika_sangtani_1/clip015_hindi_vanika_sangtani_1.mp4
+  audio_path: /MuseTalk/benchmarking_videos/hindi_female_akshata_deshpande_1/clip005_hindi_akshata_deshpande_1.wav
+  result_name: video_clip015_hindi_vanika_sangtani_1_audio_clip005_hindi_akshata_deshpande_1.mp4
+task_27:
+  video_path: /MuseTalk/benchmarking_videos/hindi_male_pm_modi_1/clip008_pm_modi_1.mp4
+  audio_path: /MuseTalk/benchmarking_videos/english_male_anand_mahindra_1/clip010_english_anand_mahindra_1.wav
+  result_name: video_clip008_pm_modi_1_audio_clip010_english_anand_mahindra_1.mp4
+task_28:
+  video_path: /MuseTalk/benchmarking_videos/hindi_male_pm_modi_1/clip021_pm_modi_1.mp4
+  audio_path: /MuseTalk/benchmarking_videos/english_male_sjaishankar_1/clip009_english_sjaishankar_1.wav
+  result_name: video_clip021_pm_modi_1_audio_clip009_english_sjaishankar_1.mp4
+task_29:
+  video_path: /MuseTalk/benchmarking_videos/hindi_male_pm_modi_1/clip010_pm_modi_1.mp4
+  audio_path: /MuseTalk/benchmarking_videos/english_male_sundar_pichai_1/clip014_english_sundar_pichai_1.wav
+  result_name: video_clip010_pm_modi_1_audio_clip014_english_sundar_pichai_1.mp4
+task_30:
+  video_path: /MuseTalk/benchmarking_videos/hindi_male_pm_modi_1/clip027_pm_modi_1.mp4
+  audio_path: /MuseTalk/benchmarking_videos/hindi_male_sujeet_govindani_1/clip013_hindi_sujeet_govindani_1.wav
+  result_name: video_clip027_pm_modi_1_audio_clip013_hindi_sujeet_govindani_1.mp4
+task_31:
+  video_path: /MuseTalk/benchmarking_videos/hindi_male_pm_modi_1/clip015_pm_modi_1.mp4
+  audio_path: /MuseTalk/benchmarking_videos/hindi_male_suresh_srinivasan_1/clip001_hindi_suresh_srinivasan_1.wav
+  result_name: video_clip015_pm_modi_1_audio_clip001_hindi_suresh_srinivasan_1.mp4
+task_32:
+  video_path: /MuseTalk/benchmarking_videos/hindi_male_sujeet_govindani_1/clip006_hindi_sujeet_govindani_1.mp4
+  audio_path: /MuseTalk/benchmarking_videos/english_male_anand_mahindra_1/clip006_english_anand_mahindra_1.wav
+  result_name: video_clip006_hindi_sujeet_govindani_1_audio_clip006_english_anand_mahindra_1.mp4
+task_33:
+  video_path: /MuseTalk/benchmarking_videos/hindi_male_sujeet_govindani_1/clip005_hindi_sujeet_govindani_1.mp4
+  audio_path: /MuseTalk/benchmarking_videos/english_male_sjaishankar_1/clip022_english_sjaishankar_1.wav
+  result_name: video_clip005_hindi_sujeet_govindani_1_audio_clip022_english_sjaishankar_1.mp4
+task_34:
+  video_path: /MuseTalk/benchmarking_videos/hindi_male_sujeet_govindani_1/clip002_hindi_sujeet_govindani_1.mp4
+  audio_path: /MuseTalk/benchmarking_videos/english_male_sundar_pichai_1/clip014_english_sundar_pichai_1.wav
+  result_name: video_clip002_hindi_sujeet_govindani_1_audio_clip014_english_sundar_pichai_1.mp4
+task_35:
+  video_path: /MuseTalk/benchmarking_videos/hindi_male_sujeet_govindani_1/clip011_hindi_sujeet_govindani_1.mp4
+  audio_path: /MuseTalk/benchmarking_videos/hindi_male_pm_modi_1/clip013_pm_modi_1.wav
+  result_name: video_clip011_hindi_sujeet_govindani_1_audio_clip013_pm_modi_1.mp4
+task_36:
+  video_path: /MuseTalk/benchmarking_videos/hindi_male_sujeet_govindani_1/clip005_hindi_sujeet_govindani_1.mp4
+  audio_path: /MuseTalk/benchmarking_videos/hindi_male_suresh_srinivasan_1/clip001_hindi_suresh_srinivasan_1.wav
+  result_name: video_clip005_hindi_sujeet_govindani_1_audio_clip001_hindi_suresh_srinivasan_1.mp4
+task_37:
+  video_path: /MuseTalk/benchmarking_videos/hindi_male_suresh_srinivasan_1/clip000_hindi_suresh_srinivasan_1.mp4
+  audio_path: /MuseTalk/benchmarking_videos/english_male_anand_mahindra_1/clip006_english_anand_mahindra_1.wav
+  result_name: video_clip000_hindi_suresh_srinivasan_1_audio_clip006_english_anand_mahindra_1.mp4
+task_38:
+  video_path: /MuseTalk/benchmarking_videos/hindi_male_suresh_srinivasan_1/clip002_hindi_suresh_srinivasan_1.mp4
+  audio_path: /MuseTalk/benchmarking_videos/english_male_sjaishankar_1/clip004_english_sjaishankar_1.wav
+  result_name: video_clip002_hindi_suresh_srinivasan_1_audio_clip004_english_sjaishankar_1.mp4
+task_39:
+  video_path: /MuseTalk/benchmarking_videos/hindi_male_suresh_srinivasan_1/clip003_hindi_suresh_srinivasan_1.mp4
+  audio_path: /MuseTalk/benchmarking_videos/english_male_sundar_pichai_1/clip014_english_sundar_pichai_1.wav
+  result_name: video_clip003_hindi_suresh_srinivasan_1_audio_clip014_english_sundar_pichai_1.mp4
+task_40:
+  video_path: /MuseTalk/benchmarking_videos/hindi_male_suresh_srinivasan_1/clip001_hindi_suresh_srinivasan_1.mp4
+  audio_path: /MuseTalk/benchmarking_videos/hindi_male_pm_modi_1/clip003_pm_modi_1.wav
+  result_name: video_clip001_hindi_suresh_srinivasan_1_audio_clip003_pm_modi_1.mp4
+task_41:
+  video_path: /MuseTalk/benchmarking_videos/hindi_male_suresh_srinivasan_1/clip000_hindi_suresh_srinivasan_1.mp4
+  audio_path: /MuseTalk/benchmarking_videos/hindi_male_sujeet_govindani_1/clip013_hindi_sujeet_govindani_1.wav
+  result_name: video_clip000_hindi_suresh_srinivasan_1_audio_clip013_hindi_sujeet_govindani_1.mp4
