@@ -103,40 +103,12 @@ class Benchmark:
         with open(self.inference_args.inference_config, 'w') as file:
             yaml.dump(c, file, default_flow_style=False, sort_keys=False)
         print(f'Finish writing task to yaml file: {json.dumps(c, indent=4)}')
-
-
-    def inferenace(self):
-        # self.inference_config = args.inference_config
-        # self.result_dir = args.result_dir
-        # self.unet_model_path = args.unet_model_path
-        # self.unet_config = args.unet_config
-        # self.version_arg = args.version_arg
-        #syncnet checkpoint
-        #syncnet config
-        if self.inference_args.stage == 'finetuned':
-            print('Starting inference on benchmarking data. Finetuned model')
-            self.inference_args.result_dir = self.inference_args.result_dir_finetuned 
-            generate_animation(self.inference_args)
-            self.benchmarking(model_stage = 'finetuned')
-        else:
-            print('Starting inference on benchmarking data. Original Model')
-            self.inference_args.result_dir = self.inference_args.result_dir_original
-            generate_animation(self.inference_args)
-            self.benchmarking(model_stage='original')
                     
     
-    def benchmarking(self, model_stage = 'original' ):
-        #results_path = join(self.inference_args.result_dir, self.inference_args.version)
+    def benchmarking(self, ref_gen_video_pairs, output_csv_path = None, model_stage = 'original' ):
 
-        #test:
-        results_path = '/home/nikit/benchmarking_videos'
-        self.generated_videos = glob.glob(join('/home/nikit/benchmarking_videos/hindi_male_pm_modi_1', '*.mp4'))
-        self.ground_truth = glob.glob(join("/home/nikit/benchmarking_videos/hindi_male_suresh_srinivasan_1", '*.mp4'))
-        
-
-
-
-        score_csv_path = join(results_path, f'{model_stage}_benchmarking.csv')
+        csv_path = output_csv_path or  join(dirname(ref_gen_video_pairs[0][1]), f'{model_stage}_benchmarking.csv')
+    
         
         score_data = {
             "ground_truth_video_name": [],
@@ -156,7 +128,7 @@ class Benchmark:
             
         }
 
-        for ref_video, gen_video in zip(self.ground_truth, self.generated_videos):
+        for ref_video, gen_video in ref_gen_video_pairs:
             try:
                 score_data['ground_truth_video_name'].append(basename(ref_video))
                 score_data['generate_video_name'].append(basename(gen_video))
@@ -183,19 +155,57 @@ class Benchmark:
                 continue
         
         print('score_data', score_data)
-        df = pd.DataFrame(score_data)
-        print(f'Sample rows: {df.head(4)}')
-        df.to_csv(score_csv_path)
-        print(f'Benchmarking done on {model_stage} model')
+        try:
+            df = pd.DataFrame(score_data)
+            print(f'Sample rows: {df.head(4)}')
+            df.to_csv(csv_path)
+            print(f'Benchmarking done on {model_stage} model')
+        except Exception as e:
+            print(f'Error in storing panda DF: {e}')
+            with open(csv_path.replace('.csv', '.json'), 'w') as f:
+                json.dump(score_data, f, indent=4)
+                print(f'created a json file at {csv_path.replace('.csv', '.json')}')
+
+def return_ref_video_paths(model_results_path, source_path = './benchmarking_videos'):
+    dirs = os.listdir(model_results_path)
+    #video_clip002_english_anand_mahindra_1_audio_clip004_english_sundar_pichai_1.mp4
+    ref_gen_video_pairs = []
+    for v in dirs:
+        if v.endswith('.mp4'):
+            ref_vid_name  = v.split('_audio_')[1]
+            ref_dir_name = '_'.join(ref_vid_name.split('_')[2:]).split('.')[0]
+            print(f'Video reference dir name {ref_dir_name}')
+            
+            ref_gen_video_pairs.append([
+                join(source_path, ref_dir_name, ref_dir_name),
+                join(model_results_path, v)
+            ])
+    
+    print(f'Reference-generate video pairs : {ref_gen_video_pairs}')
+    return ref_gen_video_pairs
 
 
 def main(args):
+    original_mode = 'original'
+    finetuned_mode = 'finetuned'
+    
     benchmark = Benchmark(args.source_path, args)
-    voice_list = {
-        "male":['english_male.wav','hindi_male.wav'],
-        "female": ['english_female.wav', 'hindi_female.wav']
-    }
-    benchmark.prepare_video_with_same_audio(voice_list)
+
+    original_model_results = join(args.result_dir, original_mode, args.version)
+    output_csv_path = join(original_model_results, f'{original_mode}_benchmarking.csv')
+    ref_gen_video_pairs = return_ref_video_paths(original_model_results, args.source_path)
+
+    print(f'Starting benchmarking onf {original_mode}')
+    benchmark.benchmarking(ref_gen_video_pairs, output_csv_path = output_csv_path, model_stage = original_mode)
+    
+    finetuned_model_results = join(args.result_dir, finetuned_mode, args.version)
+    output_csv_path = join(finetuned_model_results, f'{finetuned_mode}_benchmarking.csv')
+    ref_gen_video_pairs = return_ref_video_paths(finetuned_model_results, args.source_path)
+
+    print(f'Starting benchmarking onf {finetuned_mode}')
+    benchmark.benchmarking(ref_gen_video_pairs, output_csv_path = output_csv_path, model_stage = finetuned_mode)
+
+
 
 
 if __name__ == '__main__':
@@ -210,10 +220,9 @@ if __name__ == '__main__':
 
     parser.add_argument("--unet_config", type=str, default="./models/musetalk/config.json", help="Path to UNet configuration file")
     parser.add_argument("--unet_model_path", type=str, default="./models/musetalkV15/unet.pth", help="Path to UNet model weights")
-    parser.add_argument("--result_dir_finetuned", default='./results_finetuned', help="Directory for output results")
-    parser.add_argument("--result_dir_original", default='./results_original', help="Directory for output results")
+    parser.add_argument("--result_dir", default='./results', help="Directory for output results")
     parser.add_argument("--stage", type=str, default='original', help="Stage to select for getting output from model.")
-    parser.add_argument("--source_path", required=True)
+    parser.add_argument("--source_path", type = 'str', default='./benchmarking_videos')
     parser.add_argument("--force_generate", type=bool, default=False, help="Force generate video even if already exists.")
 
 
