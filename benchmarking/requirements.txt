@@ -5,3 +5,8 @@ lpips
 deepface
 insightface
 onnxruntime
+librosa
+tf-keras
+einops
+diffusers
+omegaconf

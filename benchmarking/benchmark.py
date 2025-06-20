@@ -164,7 +164,7 @@ class Benchmark:
             print(f'Error in storing panda DF: {e}')
             with open(csv_path.replace('.csv', '.json'), 'w') as f:
                 json.dump(score_data, f, indent=4)
-                print(f'created a json file at {csv_path.replace('.csv', '.json')}')
+                print(f"created a json file at {csv_path.replace('.csv', '.json')}")
 
 def return_ref_video_paths(model_results_path, source_path = './benchmarking_videos'):
     dirs = os.listdir(model_results_path)
@@ -175,9 +175,11 @@ def return_ref_video_paths(model_results_path, source_path = './benchmarking_vid
             ref_vid_name  = v.split('_audio_')[1]
             ref_dir_name = '_'.join(ref_vid_name.split('_')[2:]).split('.')[0]
             print(f'Video reference dir name {ref_dir_name}')
-            
+            for dd in os.listdir(source_path):
+                if ref_dir_name in dd:
+                    ref_dir_name = dd
             ref_gen_video_pairs.append([
-                join(source_path, ref_dir_name, ref_dir_name),
+                join(source_path, ref_dir_name, ref_vid_name),
                 join(model_results_path, v)
             ])
     
@@ -222,7 +224,7 @@ if __name__ == '__main__':
     parser.add_argument("--unet_model_path", type=str, default="./models/musetalkV15/unet.pth", help="Path to UNet model weights")
     parser.add_argument("--result_dir", default='./results', help="Directory for output results")
     parser.add_argument("--stage", type=str, default='original', help="Stage to select for getting output from model.")
-    parser.add_argument("--source_path", type = 'str', default='./benchmarking_videos')
+    parser.add_argument("--source_path", type = str, default='./benchmarking_videos')
     parser.add_argument("--force_generate", type=bool, default=False, help="Force generate video even if already exists.")
 
 
