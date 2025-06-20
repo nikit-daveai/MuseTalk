@@ -7,8 +7,6 @@ import numpy as np
 import sys
 import os, json
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-
-from scripts.inference import main as generate_animation
 from os.path import isdir, dirname, basename, exists, join
 import glob
 import argparse
@@ -27,6 +25,8 @@ class Benchmark:
         self.inference_args = args
 
     def prepare_video_audio_pairs(self):
+        #source path 
+        #inference config
         self.video_audio_pairs = []
         self.ground_truth = []
         
@@ -71,6 +71,39 @@ class Benchmark:
         print(f'Finish writing task to yaml file: {json.dumps(c, indent=4)}')
         return self.video_audio_pairs
     
+    def prepare_video_with_same_audio(self, voice_list: dict):
+        dirs = os.listdir(self.source_path)
+
+        pairs = []
+
+        def func(vd):
+            videos = glob.glob(join(vd, '*.mp4'))
+            video_path = np.random.choice(list(filter(lambda x: x.endswith('.mp4'), videos)))
+            return video_path
+
+        for d in dirs:
+            gender = d.split('_')[1]
+            if gender == 'male':
+                x = voice_list.get('male')
+            elif gender == 'female':
+                x = voice_list.get('female')
+            
+            vd = join(self.source_path, d)
+            vid = str(func(vd))
+            pairs.append([vid, join(self.source_path, x[0])])
+            pairs.append([vid, join(self.source_path, x[1])])
+    
+        c = {
+            f"task_{i}":{
+                "video_path": x[0],
+                "audio_path":x[1],
+                "result_name": 'video_{}_audio_{}'.format(basename(x[0]).replace('.mp4',''), basename(x[1]).replace('.wav', '.mp4'))
+            } for i, x in enumerate(pairs)
+        }
+        with open(self.inference_args.inference_config, 'w') as file:
+            yaml.dump(c, file, default_flow_style=False, sort_keys=False)
+        print(f'Finish writing task to yaml file: {json.dumps(c, indent=4)}')
+
 
     def inferenace(self):
         # self.inference_config = args.inference_config
@@ -96,9 +129,9 @@ class Benchmark:
         #results_path = join(self.inference_args.result_dir, self.inference_args.version)
 
         #test:
-        results_path = '/home/nikit/benchmarking-videos'
-        self.generated_videos = glob.glob(join('/home/nikit/benchmarking-videos/hindi_male_pm_modi_1', '*.mp4'))
-        self.ground_truth = glob.glob(join("/home/nikit/benchmarking-videos/hindi_male_suresh_srinivasan_1", '*.mp4'))
+        results_path = '/home/nikit/benchmarking_videos'
+        self.generated_videos = glob.glob(join('/home/nikit/benchmarking_videos/hindi_male_pm_modi_1', '*.mp4'))
+        self.ground_truth = glob.glob(join("/home/nikit/benchmarking_videos/hindi_male_suresh_srinivasan_1", '*.mp4'))
         
 
 
@@ -146,9 +179,10 @@ class Benchmark:
                     print(f'Average score for {key}:  {score_data[key]}')
             except Exception as e:
                 print(f'Got an error while calculating {ref_video} and {gen_video} score...')
+                print(e)
                 continue
-
-
+        
+        print('score_data', score_data)
         df = pd.DataFrame(score_data)
         print(f'Sample rows: {df.head(4)}')
         df.to_csv(score_csv_path)
@@ -157,7 +191,12 @@ class Benchmark:
 
 def main(args):
     benchmark = Benchmark(args.source_path, args)
-    benchmark.benchmarking()
+    voice_list = {
+        "male":['english_male.wav','hindi_male.wav'],
+        "female": ['english_female.wav', 'hindi_female.wav']
+    }
+    benchmark.prepare_video_with_same_audio(voice_list)
+
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
