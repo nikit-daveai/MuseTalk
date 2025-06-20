@@ -25,7 +25,7 @@ fi
 # Set config path based on mode
 if [ "$mode" = "normal" ]; then
     config_path="/MuseTalk/configs/inference/benchmarking.yaml"
-    result_dir="/MuseTalk/results/original"
+    result_dir="/MuseTalk/results/finetuned"
 else
     config_path="./configs/inference/realtime.yaml"
     result_dir="./results/realtime"
@@ -38,9 +38,9 @@ if [ "$version" = "v1.0" ]; then
     unet_config="$model_dir/musetalk.json"
     version_arg="v1"
 elif [ "$version" = "v1.5" ]; then
-    model_dir="/MuseTalk/models/musetalkV15"
-    unet_model_path="$model_dir/unet.pth"
-    unet_config="$model_dir/musetalk.json"
+    model_dir="/MuseTalk/exp_out/stage2_exp_1/dave_custom_data"
+    unet_model_path="$model_dir/unet-12500.pth"
+    unet_config="/MuseTalk/models/musetalk/musetalk.json"
     version_arg="v15"
 else
     echo "Invalid version specified. Please use v1.0 or v1.5."
