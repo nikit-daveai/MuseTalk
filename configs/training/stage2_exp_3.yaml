@@ -57,7 +57,7 @@ discriminator_train_params:
   weight_decay: 0.01  # Weight decay for optimizer
   patch_size: 1  # Size of patches for discriminator
   betas: [0.5, 0.999]  # Beta parameters for Adam optimizer
-  epochs: 500  # Number of training epochs
+  epochs: 1000  # Number of training epochs
   start_gan: 100  # Step to start GAN training
 
 solver:
@@ -66,7 +66,7 @@ solver:
   mixed_precision: 'fp16'  # Precision mode for training
   enable_xformers_memory_efficient_attention: True  # Whether to use memory efficient attention
   gradient_checkpointing: True  # Whether to use gradient checkpointing
-  max_train_steps: 2000  # Maximum number of training steps
+  max_train_steps: 5000  # Maximum number of training steps
   max_grad_norm: 1.0  # Maximum gradient norm for clipping
   # Learning rate parameters
   learning_rate: 5.0e-6  # Base learning rate
@@ -80,10 +80,10 @@ solver:
   adam_weight_decay: 1.0e-2  # Weight decay for Adam optimizer
   adam_epsilon: 1.0e-8  # Epsilon for Adam optimizer
 
-total_limit: 4  # Maximum number of checkpoints to keep
-save_model_epoch_interval: 2000  # Interval between model saves
+total_limit: 10  # Maximum number of checkpoints to keep
+save_model_epoch_interval: 5000  # Interval between model saves
 checkpointing_steps: 500  # Number of steps between checkpoints
-val_freq: 200  # Frequency of validation
+val_freq: 500  # Frequency of validation
 
 seed: 41  # Random seed for reproducibility
 
