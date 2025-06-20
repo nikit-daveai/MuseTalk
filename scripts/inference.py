@@ -232,11 +232,11 @@ def main(args):
 
             # Save prediction results
             temp_vid_path = f"{temp_dir}/temp_{input_basename}_{audio_basename}.mp4"
-            cmd_img2video = f"ffmpeg -y -v warning -r {fps} -f image2 -i {result_img_save_path}/%08d.png -vcodec libx264 -vf format=yuv420p -crf 18 {temp_vid_path}"
+            cmd_img2video = f'ffmpeg -y -v warning -r {fps} -f image2 -i "{result_img_save_path}/%08d.png" -vcodec libx264 -vf format=yuv420p -crf 18 "{temp_vid_path}"'
             print("Video generation command:", cmd_img2video)
             os.system(cmd_img2video)   
             
-            cmd_combine_audio = f"ffmpeg -y -v warning -i {audio_path} -i {temp_vid_path} {output_vid_name}"
+            cmd_combine_audio = f'ffmpeg -y -v warning -i "{audio_path}" -i "{temp_vid_path}" "{output_vid_name}"'
             print("Audio combination command:", cmd_combine_audio) 
             os.system(cmd_combine_audio)
             
