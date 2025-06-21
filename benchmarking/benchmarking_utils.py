@@ -115,7 +115,7 @@ def download_video(vid_url, timestamp_ranges = '00:00:10-00.06:10', dest_path = 
         print(e)
         print('retrying with without timestamp....')
         #download_video(vid_url , timestamp_ranges= None)
-
+    
     with yt_dlp.YoutubeDL(ydl_opts) as ydl:
         ydl.download([vid_url])
 
@@ -236,7 +236,23 @@ if __name__ == "__main__":
         # "english_rashmika_mandana_1":"https://www.youtube.com/watch?v=EQYWOQ-12c8"
  }
     youtube_list = {
-        
+        "hindi_female_apna_college_1":"https://www.youtube.com/shorts/u3FtKYm6ykE?si=9zURQCSPcQOSNyx4",
+        "english_male_manish_1":"https://www.youtube.com/shorts/3JSY2YOM8GY",
+        "english_female_aleena_1":"https://www.youtube.com/watch?v=cuwRniQ1-Y8",
+        "hindi_female_amrita_1":"https://www.youtube.com/watch?v=Fn1GQk_x1uA",
+        "hindi_female_sanchita_1":"https://www.youtube.com/watch?v=GIernkgvQiU",
+        "english_male_drpal_1":"https://www.youtube.com/shorts/BA8TJP1s-Qw",
+        "english_female_bipasha_1":"https://www.youtube.com/watch?v=d9ZwezO5oRU",
+        "hindi_male_sameer_madaan_1":"https://www.youtube.com/watch?v=cWoRvHih3k8",
+        "hindi_male_sameer_madaan_2":"https://www.youtube.com/watch?v=QiRZpuGJ-1o",
+        "hindi_male_gaurav_taneja_1":"https://www.youtube.com/watch?v=zSuDRcu15H0",
+        "hindi_female_simmy_goraya_1":"https://www.youtube.com/watch?v=bPAypCh4k0Q",
+        "hindi_male_laksh_vaishnav_1":"https://www.youtube.com/watch?v=67jrSL6RzJM",
+        "english_male_savinder_puri_1":"https://www.youtube.com/watch?v=r3YPYdSP-yU",
+        "english_male_shubham_gill_1":"https://www.youtube.com/watch?v=behkHHC1kUs",
+        "hindi_male_jeet_salal_1":"https://www.youtube.com/watch?v=tddiO_5LNb8",
+        "hindi_male_guru_mann_1":"https://www.youtube.com/watch?v=kUErCeb3CcU",
+        "english_male_jeet_salal_2":"https://www.youtube.com/watch?v=ngX4TjNHlvU"
     }
 
     videos = os.listdir(videos_path)

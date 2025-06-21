@@ -132,7 +132,7 @@ class Benchmark:
         score_data = {
             "ground_truth_video_name": [],
             "generate_video_name": [],
-            "lip_sync_score":[],
+            #"lip_sync_score":[],
             #"cosine_similarity":[],
             "psnr":[],
             "ssim":[],
@@ -151,7 +151,7 @@ class Benchmark:
 
                 score_data['ground_truth_video_name'].append(basename(ref_video))
                 score_data['generate_video_name'].append(basename(gen_video))
-                score_data['lip_sync_score'].append(0)#append(audio_lip_sync_score(ref_video.replace('.mp4','.wav'), gen_video, self.inference_args))
+                #score_data['lip_sync_score'].append(0)#append(audio_lip_sync_score(ref_video.replace('.mp4','.wav'), gen_video, self.inference_args))
                 # score_data['cosine_similarity'].append(identity_score(ref_video, gen_video))
                 # score_data['compare_emotions'].append(compare_emotions(ref_video, gen_video))
 
@@ -192,8 +192,8 @@ def return_ref_video_paths(model_results_path, source_path = './benchmarking_vid
     ref_gen_video_pairs = []
     for v in dirs:
         if v.endswith('.mp4'):
-            ref_vid_name  = v.split('_audio_')[2]
-            ref_dir_name = '_'.join(ref_vid_name.split('_')[2:]).split('.')[0]
+            ref_vid_name  = v.split('_audio_')[1]
+            ref_dir_name = '_'.join(ref_vid_name.split('_')[ 2:]).split('.')[0]
             print(f'Video reference dir name {ref_dir_name}')
             for dd in os.listdir(source_path):
                 if ref_dir_name in dd:
