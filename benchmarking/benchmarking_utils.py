@@ -220,7 +220,7 @@ def get_frame_audio_pairs(video_path, audio_path, num_frames=16, target_fps=25):
 
 if __name__ == "__main__":
 
-    videos_path = '/home/nikit/benchmarking-videos'
+    videos_path = '/MuseTalk/benchmarking_videos'
 
     youtube_list = {
         # "hindi_pm_modi_1": "https://www.youtube.com/watch?v=hY-sBLhEpbw",
@@ -252,9 +252,7 @@ if __name__ == "__main__":
         "english_male_shubham_gill_1":"https://www.youtube.com/watch?v=behkHHC1kUs",
         "hindi_male_jeet_salal_1":"https://www.youtube.com/watch?v=tddiO_5LNb8",
         "hindi_male_guru_mann_1":"https://www.youtube.com/watch?v=kUErCeb3CcU",
-        "english_male_jeet_salal_2":"https://www.youtube.com/watch?v=ngX4TjNHlvU",
-
-        "hindi_male_kashish_gupta_1":"https://www.youtube.com/watch?v=FJKfnzvI0ic"
+        "english_male_jeet_salal_2":"https://www.youtube.com/watch?v=ngX4TjNHlvU" 
     }
 
     videos = os.listdir(videos_path)
@@ -283,10 +281,10 @@ if __name__ == "__main__":
     #audio extraction
     vid_dirs = os.listdir(videos_path)
     for vid_dir in vid_dirs:
-        if not isdir(vid_dir):
+        if not isdir(os.path.join(videos_path, vid_dir)):
             print(f'{vid_dir} is not a directory, skipping...')
             continue
-        samples = 5
+        samples = 10
         videos = os.listdir(os.path.join(videos_path, vid_dir))
         random.shuffle(videos)
         for vid in videos:

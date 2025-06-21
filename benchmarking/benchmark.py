@@ -165,7 +165,7 @@ class Benchmark:
 
             scores = average_score(ref_frames_dir, gen_frames_dir)
             for key, value in scores.items():
-                score_data[key].append(np.average(np.array(value)))
+                score_data[key].append(np.average(np.array(value)) if value else 0  )
                 print(f'Average score for {key}:  {score_data[key]}')
             
             print(f'Deleting temperaroy directories: {ref_frames_dir}, {gen_frames_dir}')
