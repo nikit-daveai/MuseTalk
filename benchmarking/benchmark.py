@@ -148,30 +148,29 @@ class Benchmark:
         }
 
         for ref_video, gen_video in ref_gen_video_pairs:
+            score_data['ground_truth_video_name'].append(basename(ref_video))
+            score_data['generate_video_name'].append(basename(gen_video))
+            #score_data['lip_sync_score'].append(0)#append(audio_lip_sync_score(ref_video.replace('.mp4','.wav'), gen_video, self.inference_args))
+            # score_data['cosine_similarity'].append(identity_score(ref_video, gen_video))
+            # score_data['compare_emotions'].append(compare_emotions(ref_video, gen_video))
 
-                score_data['ground_truth_video_name'].append(basename(ref_video))
-                score_data['generate_video_name'].append(basename(gen_video))
-                #score_data['lip_sync_score'].append(0)#append(audio_lip_sync_score(ref_video.replace('.mp4','.wav'), gen_video, self.inference_args))
-                # score_data['cosine_similarity'].append(identity_score(ref_video, gen_video))
-                # score_data['compare_emotions'].append(compare_emotions(ref_video, gen_video))
+            ref_frames_dir = self.save_image_frames(ref_video)
+            gen_frames_dir = self.save_image_frames(gen_video)
+            
+            score_data['fid'].append(compute_fid(ref_frames_dir, gen_frames_dir))
+            score_data['flicker_score_ground_truth'].append(compute_optical_flow_consistency(ref_frames_dir))
+            score_data['flicker_score_gen_video'].append(compute_optical_flow_consistency(gen_frames_dir))
+            score_data['ptical_flow_consistency_ground_truth'].append(compute_optical_flow_consistency(ref_frames_dir))
+            score_data['ptical_flow_consistency_gen_video'].append(compute_optical_flow_consistency(gen_video))
 
-                ref_frames_dir = self.save_image_frames(ref_video)
-                gen_frames_dir = self.save_image_frames(gen_video)
-              
-                score_data['fid'].append(compute_fid(ref_frames_dir, gen_frames_dir))
-                score_data['flicker_score_ground_truth'].append(compute_optical_flow_consistency(ref_frames_dir))
-                score_data['flicker_score_gen_video'].append(compute_optical_flow_consistency(gen_frames_dir))
-                score_data['ptical_flow_consistency_ground_truth'].append(compute_optical_flow_consistency(ref_frames_dir))
-                score_data['ptical_flow_consistency_gen_video'].append(compute_optical_flow_consistency(gen_video))
-
-                scores = average_score(ref_frames_dir, gen_frames_dir)
-                for key, value in scores.items():
-                    score_data[key].append(np.average(np.array(value)))
-                    print(f'Average score for {key}:  {score_data[key]}')
-                
-                print(f'Deleting temperaroy directories: {ref_frames_dir}, {gen_frames_dir}')
-                shutil.rmtree(ref_frames_dir)
-                shutil.rmtree(gen_frames_dir)
+            scores = average_score(ref_frames_dir, gen_frames_dir)
+            for key, value in scores.items():
+                score_data[key].append(np.average(np.array(value)))
+                print(f'Average score for {key}:  {score_data[key]}')
+            
+            print(f'Deleting temperaroy directories: {ref_frames_dir}, {gen_frames_dir}')
+            shutil.rmtree(ref_frames_dir)
+            shutil.rmtree(gen_frames_dir)
 
 
         print('score_data', score_data)

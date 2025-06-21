@@ -32,7 +32,7 @@ def get_frames_from_dir(frames_dir):
             np.array(Image.open(fp))
         )
 
-    print(f'Frames from get_frames_from_dir: {frames[0].shape}')
+    print(f'Frame shape from get_frames_from_dir: {frames[0].shape}')
     return frames
 
 
