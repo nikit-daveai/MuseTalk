@@ -252,15 +252,18 @@ if __name__ == "__main__":
         "english_male_shubham_gill_1":"https://www.youtube.com/watch?v=behkHHC1kUs",
         "hindi_male_jeet_salal_1":"https://www.youtube.com/watch?v=tddiO_5LNb8",
         "hindi_male_guru_mann_1":"https://www.youtube.com/watch?v=kUErCeb3CcU",
-        "english_male_jeet_salal_2":"https://www.youtube.com/watch?v=ngX4TjNHlvU"
+        "english_male_jeet_salal_2":"https://www.youtube.com/watch?v=ngX4TjNHlvU",
+
+        "hindi_male_kashish_gupta_1":"https://www.youtube.com/watch?v=FJKfnzvI0ic"
     }
 
     videos = os.listdir(videos_path)
+    dest_path = videos_path
     print(videos)
     for title, url in youtube_list.items():
         if not any(title in _ for _ in videos):
             try:
-                download_video(url, title=title)
+                download_video(url, title=title, dest_path = dest_path)
             except Exception as e:
                 print(f'Failed to download video- {title} : {url}')
                 print(e)
