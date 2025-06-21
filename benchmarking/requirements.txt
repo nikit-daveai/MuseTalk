@@ -10,3 +10,4 @@ tf-keras
 einops
 diffusers
 omegaconf
+clean-fid

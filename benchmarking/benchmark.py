@@ -1,4 +1,5 @@
 import benchmarking_utils as utils
+from benchmarking_utils import *
 from identity_eval import compare_identity as identity_score
 from identity_eval import *
 from syncnet_eval import main as audio_lip_sync_score
@@ -7,7 +8,6 @@ import numpy as np
 import sys
 import os, json
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-from os.path import isdir, dirname, basename, exists, join
 import glob
 import argparse
 import yaml
@@ -15,6 +15,7 @@ import csv
 import warnings
 import subprocess
 import pandas as pd
+import shutil
 
 warnings.filterwarnings('ignore')
 
@@ -38,6 +39,10 @@ class Benchmark:
             video_path = np.random.choice(list(filter(lambda x: x.endswith('.mp4'), videos)))
             audio_path = np.random.choice(list(filter(lambda x: x.endswith('.wav'), audios)))
             
+            #new code
+            if audio_path.replace('.wav', '') == video_path.replace('.mp4',''):
+                make_video_audio_pairs(d1, d2)
+
             self.ground_truth.append(audio_path.replace('.wav', '.mp4'))
             self.video_audio_pairs.append([str(video_path), str(audio_path)])
         
@@ -47,8 +52,10 @@ class Benchmark:
         dir_pairs = []
 
         for d in dirs:
-            x = [[d, i] for i in dirs if i != d and basename(i).split('_')[1] == basename(d).split('_')[1]]
-            dir_pairs.extend(x)
+            #old code 
+            #x = [[d, i] for i in dirs if i != d and basename(i).split('_')[1] == basename(d).split('_')[1]]
+            #New code with same dir
+            dir_pairs.extend([[d, d]])
         
         
         for d1, d2 in dir_pairs:
@@ -103,7 +110,19 @@ class Benchmark:
         with open(self.inference_args.inference_config, 'w') as file:
             yaml.dump(c, file, default_flow_style=False, sort_keys=False)
         print(f'Finish writing task to yaml file: {json.dumps(c, indent=4)}')
-                    
+
+    def save_image_frames(self, video_path):
+        
+        temp_frame_dir = video_path.replace('.mp4', '')
+        os.makedirs(temp_frame_dir, exist_ok=True)
+
+        if os.listdir(temp_frame_dir):
+            print(f'Frames already exists at {temp_frame_dir}, skiping extraction ')
+            return temp_frame_dir
+        cmd = f"ffmpeg -v fatal -i {video_path} -start_number 0 {temp_frame_dir}/%08d.png"
+        os.system(cmd)
+        
+        return temp_frame_dir
     
     def benchmarking(self, ref_gen_video_pairs, output_csv_path = None, model_stage = 'original' ):
 
@@ -114,13 +133,13 @@ class Benchmark:
             "ground_truth_video_name": [],
             "generate_video_name": [],
             "lip_sync_score":[],
-            "cosine_similarity":[],
+            #"cosine_similarity":[],
             "psnr":[],
             "ssim":[],
             "lpips":[],
             "fid":[],
-            "compare_landmarks":[],
-            "compare_emotions":[],
+           #"compare_landmarks":[],
+            #"compare_emotions":[],
             "flicker_score_ground_truth":[],
             "flicker_score_gen_video":[],
             "ptical_flow_consistency_ground_truth":[],
@@ -129,16 +148,16 @@ class Benchmark:
         }
 
         for ref_video, gen_video in ref_gen_video_pairs:
-            try:
+
                 score_data['ground_truth_video_name'].append(basename(ref_video))
                 score_data['generate_video_name'].append(basename(gen_video))
                 score_data['lip_sync_score'].append(0)#append(audio_lip_sync_score(ref_video.replace('.mp4','.wav'), gen_video, self.inference_args))
-                score_data['cosine_similarity'].append(identity_score(ref_video, gen_video))
-                score_data['compare_emotions'].append(compare_emotions(ref_video, gen_video))
+                # score_data['cosine_similarity'].append(identity_score(ref_video, gen_video))
+                # score_data['compare_emotions'].append(compare_emotions(ref_video, gen_video))
 
-                ref_frames_dir = extract_video_frames(ref_video)
-                gen_frames_dir = extract_video_frames(gen_video)
-
+                ref_frames_dir = self.save_image_frames(ref_video)
+                gen_frames_dir = self.save_image_frames(gen_video)
+              
                 score_data['fid'].append(compute_fid(ref_frames_dir, gen_frames_dir))
                 score_data['flicker_score_ground_truth'].append(compute_optical_flow_consistency(ref_frames_dir))
                 score_data['flicker_score_gen_video'].append(compute_optical_flow_consistency(gen_frames_dir))
@@ -149,11 +168,12 @@ class Benchmark:
                 for key, value in scores.items():
                     score_data[key].append(np.average(np.array(value)))
                     print(f'Average score for {key}:  {score_data[key]}')
-            except Exception as e:
-                print(f'Got an error while calculating {ref_video} and {gen_video} score...')
-                print(e)
-                continue
-        
+                
+                print(f'Deleting temperaroy directories: {ref_frames_dir}, {gen_frames_dir}')
+                shutil.rmtree(ref_frames_dir)
+                shutil.rmtree(gen_frames_dir)
+
+
         print('score_data', score_data)
         try:
             df = pd.DataFrame(score_data)
@@ -172,7 +192,7 @@ def return_ref_video_paths(model_results_path, source_path = './benchmarking_vid
     ref_gen_video_pairs = []
     for v in dirs:
         if v.endswith('.mp4'):
-            ref_vid_name  = v.split('_audio_')[1]
+            ref_vid_name  = v.split('_audio_')[2]
             ref_dir_name = '_'.join(ref_vid_name.split('_')[2:]).split('.')[0]
             print(f'Video reference dir name {ref_dir_name}')
             for dd in os.listdir(source_path):
@@ -188,10 +208,16 @@ def return_ref_video_paths(model_results_path, source_path = './benchmarking_vid
 
 
 def main(args):
+    
     original_mode = 'original'
     finetuned_mode = 'finetuned'
     
     benchmark = Benchmark(args.source_path, args)
+    # ref_gen_video_pairs = [
+    #     ['/home/nikit/benchmarking_videos/hindi_male_pm_modi_1/clip000_pm_modi_1.mp4',
+    #      '/home/nikit/benchmarking_videos/hindi_male_pm_modi_1/clip006_pm_modi_1.mp4']
+    # ]
+    # benchmark.benchmarking(ref_gen_video_pairs, model_stage = original_mode)
 
     original_model_results = join(args.result_dir, original_mode, args.version)
     output_csv_path = join(original_model_results, f'{original_mode}_benchmarking.csv')

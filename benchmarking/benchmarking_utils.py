@@ -8,7 +8,9 @@ import cv2
 import os
 from insightface.app import FaceAnalysis
 import torch
-
+import random
+from os.path import isdir, dirname, basename, exists, join
+from PIL import Image
 
 FPS = 25
 
@@ -22,6 +24,16 @@ def mov_to_mp4():
         os.remove(i)
 
 
+def get_frames_from_dir(frames_dir):
+    frame_paths = glob(join(frames_dir, '*'))
+    frames = []
+    for fp in frame_paths:
+        frames.append(
+            np.array(Image.open(fp))
+        )
+
+    print(f'Frames from get_frames_from_dir: {frames[0].shape}')
+    return frames
 
 
 def video_to_25fps(vid_path):
@@ -60,13 +72,13 @@ def split_video(vid_path, duration = 30):
     subprocess.run(command, check=True)
     os.remove(vid_path)
 
-def extract_audio(vid_path):
+def extract_audio(vid_path, force=False):
     file_name = os.path.basename(vid_path)
     abs_path = os.path.dirname(vid_path)
     out_filename  = file_name.replace('.mp4', '.wav')
     out_path = os.path.join(abs_path, out_filename )
 
-    if os.path.exists(out_path):
+    if os.path.exists(out_path) and not force:
         print(f'Files exists at: {out_path}')
         return
 
@@ -77,7 +89,7 @@ def extract_audio(vid_path):
             '-ar', '16000', '-ac', '1', out_path,
         ]
         
-        subprocess.run(command, check=True)
+        subprocess.run(command, check=True) 
         print(f"Audio saved to: {out_path}")
     except subprocess.CalledProcessError as e:
         print(f"Error extracting audio from {vid_path}: {e}")
@@ -211,18 +223,21 @@ if __name__ == "__main__":
     videos_path = '/home/nikit/benchmarking-videos'
 
     youtube_list = {
-        "hindi_pm_modi_1": "https://www.youtube.com/watch?v=hY-sBLhEpbw",
-        "hindi_sujeet_govindani_1":"https://youtu.be/DRWUYp1ReA8",
-        "hindi_suresh_srinivasan_1":"https://youtu.be/MUelRUNF180",
-        "english_sundar_pichai_1":"https://youtu.be/ic5O2sxhH9M",
-        "english_palki_sharma_1":"https://www.youtube.com/watch?v=JwHCOI8V4LQ",
-        "hindi_akshata_deshpande_1":"https://www.youtube.com/watch?v=dN9tmgBGNeo",
-        "english_anand_mahindra_1":"https://www.youtube.com/watch?v=HF8w15f1dj4",
+        # "hindi_pm_modi_1": "https://www.youtube.com/watch?v=hY-sBLhEpbw",
+        # "hindi_sujeet_govindani_1":"https://youtu.be/DRWUYp1ReA8",
+        # "hindi_suresh_srinivasan_1":"https://youtu.be/MUelRUNF180",
+        # "english_sundar_pichai_1":"https://youtu.be/ic5O2sxhH9M",
+        # "english_palki_sharma_1":"https://www.youtube.com/watch?v=JwHCOI8V4LQ",
+        # "hindi_akshata_deshpande_1":"https://www.youtube.com/watch?v=dN9tmgBGNeo",
+        # "english_anand_mahindra_1":"https://www.youtube.com/watch?v=HF8w15f1dj4",
         
-        "english_sjaishankar_1":"https://www.youtube.com/watch?v=-6qN3bm2RYo", #00:01:00 - 00:10:00 - usefull,
-        "hindi_vanika_sangtani_1":"https://www.youtube.com/watch?v=JYuWWVdhil4", #00:02:00 - 00:06:00 - usefull
-        "english_rashmika_mandana_1":"https://www.youtube.com/watch?v=EQYWOQ-12c8"
+        # "english_sjaishankar_1":"https://www.youtube.com/watch?v=-6qN3bm2RYo", #00:01:00 - 00:10:00 - usefull,
+        # "hindi_vanika_sangtani_1":"https://www.youtube.com/watch?v=JYuWWVdhil4", #00:02:00 - 00:06:00 - usefull
+        # "english_rashmika_mandana_1":"https://www.youtube.com/watch?v=EQYWOQ-12c8"
  }
+    youtube_list = {
+        
+    }
 
     videos = os.listdir(videos_path)
     print(videos)
@@ -251,12 +266,13 @@ if __name__ == "__main__":
     for vid_dir in vid_dirs:
         samples = 5
         videos = os.listdir(os.path.join(videos_path, vid_dir))
+        random.shuffle(videos)
         for vid in videos:
             if samples == 0:
                 break
             if vid.endswith('.mp4'):
                 path = os.path.join(videos_path, vid_dir, vid)
-                extract_audio(path)
+                extract_audio(path, force = True)
                 samples -= 1
 
 
