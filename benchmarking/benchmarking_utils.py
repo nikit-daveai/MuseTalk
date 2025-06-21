@@ -283,6 +283,9 @@ if __name__ == "__main__":
     #audio extraction
     vid_dirs = os.listdir(videos_path)
     for vid_dir in vid_dirs:
+        if not isdir(vid_dir):
+            print(f'{vid_dir} is not a directory, skipping...')
+            continue
         samples = 5
         videos = os.listdir(os.path.join(videos_path, vid_dir))
         random.shuffle(videos)
