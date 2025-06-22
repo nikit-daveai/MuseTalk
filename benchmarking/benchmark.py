@@ -119,8 +119,10 @@ class Benchmark:
         os.makedirs(temp_frame_dir, exist_ok=True)
 
         if os.listdir(temp_frame_dir):
-            print(f'Frames already exists at {temp_frame_dir}, skiping extraction ')
-            return temp_frame_dir
+            shutil.rmtree(temp_frame_dir)
+            os.makedirs(temp_frame_dir, exist_ok=True)
+            print(f'Frames already exists at {temp_frame_dir}, deleteing and creating again.')
+        
         cmd = f"ffmpeg -v fatal -i {video_path} -start_number 0 {temp_frame_dir}/%08d.png"
         os.system(cmd)
         
