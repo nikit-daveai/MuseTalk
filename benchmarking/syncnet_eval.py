@@ -267,8 +267,7 @@ class SyncEvaluator:
         self.model.requires_grad_(False)
         self.model.eval()
         
-    def evaluate(self, video_path: str, audio_path: str):
-        frames, mels = get_frame_audio_pairs(video_path, audio_path)
+    def evaluate(self, frames, mels):
         scores = []
         with torch.no_grad():            
             for frames_tensor, mels_tensor in zip(frames, mels):
@@ -280,11 +279,11 @@ class SyncEvaluator:
 
         return float(np.mean(scores))
 
-def main(audio, video, args):
-    evaluator = SyncEvaluator(args.checkpoint, args.syncnet_config)
-    score = evaluator.evaluate(video, audio)
-
+def main(frames, mels, args):
+    evaluator = SyncEvaluator(args.syncnet_model_path, args.syncnet_config_path)
+    score = evaluator.evaluate(frames, mels)
     return score
+
 
 if __name__ == '__main__':
     import argparse
@@ -292,7 +291,7 @@ if __name__ == '__main__':
     parser.add_argument('--video', required=True)
     parser.add_argument('--audio', required=True)
     parser.add_argument('--checkpoint', required=True)
-    parser.add_argument('--syncnet_config', default='/home/nikit/dave_repo/MuseTalk/configs/training/syncnet.yaml')
+    parser.add_argument('--syncnet_config_path', default='/home/nikit/dave_repo/MuseTalk/configs/training/syncnet.yaml')
     args = parser.parse_args()
 
     evaluator = SyncEvaluator(args.checkpoint, args.syncnet_config)

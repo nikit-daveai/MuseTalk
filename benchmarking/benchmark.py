@@ -27,8 +27,6 @@ class Benchmark:
         self.inference_args = args
 
     def prepare_video_audio_pairs(self):
-        #source path 
-        #inference config
         self.video_audio_pairs = []
         self.ground_truth = []
         
@@ -131,46 +129,56 @@ class Benchmark:
     def benchmarking(self, ref_gen_video_pairs, output_csv_path = None, model_stage = 'original' ):
 
         csv_path = output_csv_path or  join(dirname(ref_gen_video_pairs[0][1]), f'{model_stage}_benchmarking.csv')
-    
-        
         score_data = {
             "ground_truth_video_name": [],
             "generate_video_name": [],
             #"lip_sync_score":[],
-            #"cosine_similarity":[],
+            "cosine_similarity":[],
             "psnr":[],
             "ssim":[],
             "lpips":[],
             "fid":[],
-           #"compare_landmarks":[],
-            #"compare_emotions":[],
+            "euclidean_distance":[],
+            "procrustes_distance":[],
+            "compare_landmarks":[],
             "flicker_score_ground_truth":[],
             "flicker_score_gen_video":[],
-            "ptical_flow_consistency_ground_truth":[],
-            "ptical_flow_consistency_gen_video":[]
+            "optical_flow_consistency_ground_truth":[],
+            "optical_flow_consistency_gen_video":[]
             
         }
 
         for ref_video, gen_video in ref_gen_video_pairs:
             score_data['ground_truth_video_name'].append(basename(ref_video))
             score_data['generate_video_name'].append(basename(gen_video))
-            #score_data['lip_sync_score'].append(0)#append(audio_lip_sync_score(ref_video.replace('.mp4','.wav'), gen_video, self.inference_args))
-            # score_data['cosine_similarity'].append(identity_score(ref_video, gen_video))
-            # score_data['compare_emotions'].append(compare_emotions(ref_video, gen_video))
 
             ref_frames_dir = self.save_image_frames(ref_video)
             gen_frames_dir = self.save_image_frames(gen_video)
-            
-            score_data['fid'].append(compute_fid(ref_frames_dir, gen_frames_dir))
-            score_data['flicker_score_ground_truth'].append(compute_optical_flow_consistency(ref_frames_dir))
-            score_data['flicker_score_gen_video'].append(compute_optical_flow_consistency(gen_frames_dir))
-            score_data['ptical_flow_consistency_ground_truth'].append(compute_optical_flow_consistency(ref_frames_dir))
-            score_data['ptical_flow_consistency_gen_video'].append(compute_optical_flow_consistency(gen_video))
 
             scores = average_score(ref_frames_dir, gen_frames_dir)
             for key, value in scores.items():
                 score_data[key].append(np.average(np.array(value)) if value else 0  )
                 print(f'Average score for {key}:  {score_data[key]}')
+
+            score_data['cosine_similarity'].append(identity_score())
+
+            score_data['fid'].append(compute_fid(ref_frames_dir, gen_frames_dir))
+
+            score_data['flicker_score_ground_truth'].append(compute_flicker_score('real'))
+            score_data['flicker_score_gen_video'].append(compute_flicker_score('generated'))
+
+            score_data['optical_flow_consistency_ground_truth'].append(compute_optical_flow_consistency('real'))
+            score_data['optical_flow_consistency_gen_video'].append(compute_optical_flow_consistency('generated'))
+            
+
+            # try:
+            #     from identity_eval import generated_frames, gen_coords
+            #     frames, mels = get_frame_audio_pairs(generated_frames, ref_video.replace('.mp4', '.wav'))
+            #     score_data['lip_sync_score'].append(audio_lip_sync_score(frames, mels, self.inference_args))
+            # except Exception as e:
+            #     print(e)
+            #     score_data['lip_sync_score'].append(0)
+
             
             print(f'Deleting temperaroy directories: {ref_frames_dir}, {gen_frames_dir}')
             shutil.rmtree(ref_frames_dir)
@@ -215,26 +223,20 @@ def main(args):
     mode = args.stage
     
     benchmark = Benchmark(args.source_path, args)
+
     # ref_gen_video_pairs = [
-    #     ['/home/nikit/benchmarking_videos/hindi_male_pm_modi_1/clip000_pm_modi_1.mp4',
+    #     ['/home/nikit/benchmarking_videos/hindi_male_pm_modi_1/clip003_pm_modi_1.mp4',
     #      '/home/nikit/benchmarking_videos/hindi_male_pm_modi_1/clip006_pm_modi_1.mp4']
     # ]
-    # benchmark.benchmarking(ref_gen_video_pairs, model_stage = original_mode)
+    # benchmark.benchmarking(ref_gen_video_pairs, model_stage = mode)
+    # return
     
     model_results = join(args.result_dir, mode, args.version)
     output_csv_path = join(model_results, f'{mode}_benchmarking.csv')
     ref_gen_video_pairs = return_ref_video_paths(model_results, args.source_path)
-
     print(f'Starting benchmarking onf {mode}')
     benchmark.benchmarking(ref_gen_video_pairs, output_csv_path = output_csv_path, model_stage = mode)
     
-    # finetuned_model_results = join(args.result_dir, mode, args.version)
-    # output_csv_path = join(finetuned_model_results, f'{mode}_benchmarking.csv')
-    # ref_gen_video_pairs = return_ref_video_paths(finetuned_model_results, args.source_path)
-
-    # print(f'Starting benchmarking onf {mode}')
-    # benchmark.benchmarking(ref_gen_video_pairs, output_csv_path = output_csv_path, model_stage = finetuned_mode)
-
 
 
 
@@ -254,7 +256,8 @@ if __name__ == '__main__':
     parser.add_argument("--stage", type=str, required= True, default='original', help="Stage to select for getting output from model.")
     parser.add_argument("--source_path", type = str, default='./benchmarking_videos')
     parser.add_argument("--force_generate", type=bool, default=False, help="Force generate video even if already exists.")
-
+    parser.add_argument("--syncnet_config_path", type=str, default="./configs/training/syncnet.yaml", help="Path to syncnet model config")
+    parser.add_argument("--syncnet_model_path", type=str, default="./models/syncnet/latentsync_syncnet.pt", help="Path to syncnet model")
 
     parser.add_argument("--extra_margin", type=int, default=10, help="Extra margin for face cropping")
     parser.add_argument("--fps", type=int, default=25, help="Video frames per second")

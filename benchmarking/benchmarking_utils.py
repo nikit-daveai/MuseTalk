@@ -6,11 +6,15 @@ import librosa
 import numpy as np
 import cv2
 import os
-from insightface.app import FaceAnalysis
 import torch
 import random
 from os.path import isdir, dirname, basename, exists, join
 from PIL import Image
+import mediapipe as mp
+from copy import deepcopy as copy
+#from syncnet_eval import generated_frames, gen_coords
+
+
 
 FPS = 25
 
@@ -24,12 +28,83 @@ def mov_to_mp4():
         os.remove(i)
 
 
+def crop_to_common_size(img1, img2):
+    '''
+    im1, im2 are numpy arrays
+    '''
+    h = min(img1.shape[0], img2.shape[0])
+    w = min(img1.shape[1], img2.shape[1])
+    img1_cropped = img1[:h, :w]
+    img2_cropped = img2[:h, :w]
+    return img1_cropped, img2_cropped
+
+def pad_and_resize(img, target_size=(128, 128)):
+    h, w = img.shape[:2]
+    
+    # scaling factor and resize while preserving aspect ratio
+    scale = min(target_size[0] / h, target_size[1] / w)
+    new_w, new_h = int(w * scale), int(h * scale)
+    resized = cv2.resize(img, (new_w, new_h), interpolation=cv2.INTER_AREA)
+
+    # padding values
+    delta_w = target_size[1] - new_w
+    delta_h = target_size[0] - new_h
+    top, bottom = delta_h // 2, delta_h - (delta_h // 2)
+    left, right = delta_w // 2, delta_w - (delta_w // 2)
+
+    padded = cv2.copyMakeBorder(resized, top, bottom, left, right,
+        cv2.BORDER_CONSTANT, value=[0, 0, 0])
+    return padded
+
+
+def extract_mouth_from_frames_padded(frame_paths, mouth_padding=10, output_size=(128, 128)):
+    mp_face_mesh = mp.solutions.face_mesh
+    face_mesh = mp_face_mesh.FaceMesh(static_image_mode=True)
+    lips_frames = []
+    flatten_coords =[]
+    for fp in frame_paths:
+        frame = cv2.imread(fp)
+        if frame is None:
+            continue
+
+        rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+        results = face_mesh.process(rgb)
+
+        if results.multi_face_landmarks:
+            for face_landmarks in results.multi_face_landmarks:
+                h, w, _ = frame.shape
+
+                lip_indices = list(range(61, 89)) + list(range(89, 96))
+                xs = [int(face_landmarks.landmark[i].x * w) for i in lip_indices]
+                ys = [int(face_landmarks.landmark[i].y * h) for i in lip_indices]
+                
+                coords = np.array([[face_landmarks.landmark[i].x * w, face_landmarks.landmark[i].y * h] for i in lip_indices])
+
+                x_min = max(min(xs) - mouth_padding, 0)
+                y_min = max(min(ys) - mouth_padding, 0)
+                x_max = min(max(xs) + mouth_padding, w)
+                y_max = min(max(ys) + mouth_padding, h)
+
+                lips_crop = frame[y_min:y_max, x_min:x_max]
+
+
+                #padded_crop = pad_and_resize(lips_crop, target_size=output_size)
+                padded_crop = cv2.resize(lips_crop, output_size)
+
+                lips_frames.append(padded_crop)
+                flatten_coords.append(coords)
+                cv2.imwrite(fp, padded_crop)
+
+    return lips_frames, flatten_coords
+
 def get_frames_from_dir(frames_dir):
-    frame_paths = glob(join(frames_dir, '*'))
+    frame_paths = glob(join(frames_dir, '*.png'))
+    return extract_mouth_from_frames_padded(frame_paths)
+    
     frames = []
     for fp in frame_paths:
         frames.append(
-            np.array(Image.open(fp))
+            np.array(Image.open(fp).convert('RGB'))
         )
 
     print(f'Frame shape from get_frames_from_dir: {frames[0].shape}')
@@ -146,7 +221,7 @@ def extract_video_frames(video_path, max_frames=None, every_nth=5):
     return frames
 
 
-def get_frame_audio_pairs(video_path, audio_path, num_frames=16, target_fps=25):
+def get_frame_audio_pairs(generated_frames, audio_path, num_frames=16, target_fps=25):
     """
     Extracts face frame stacks and matching mel-spectrogram chunks.
     Returns tensors ready for model input.
@@ -154,41 +229,8 @@ def get_frame_audio_pairs(video_path, audio_path, num_frames=16, target_fps=25):
     device = 'cuda' if torch.cuda.is_available() else 'cpu'
     mel = load_audio_mel(audio_path)  # still a NumPy array for now
 
-    face_detector = FaceAnalysis(name='buffalo_l')
-    face_detector.prepare(ctx_id=0)
-
-    cap = cv2.VideoCapture(video_path)
-    fps = cap.get(cv2.CAP_PROP_FPS)
-    assert fps > 0, "Could not determine video FPS"
-
-    all_faces = []
-    frame_idx = 0
-
-    while True:
-        ret, frame = cap.read()
-        if not ret:
-            break
-
-        if frame_idx % int(fps / target_fps) != 0:
-            frame_idx += 1
-            continue  
-
-        faces = face_detector.get(frame)
-        if not faces:
-            frame_idx += 1
-            continue
-
-        x1, y1, x2, y2 = faces[0].bbox.astype(int)
-        face = frame[y1:y2, x1:x2]
-        if face.size == 0:
-            frame_idx += 1
-            continue
-        #face = cv2.resize(face, (256, 256))
-
-        all_faces.append(face)
-        frame_idx += 1
-
-    cap.release()
+    #modify when computing lip sync score
+    all_faces =  generated_frames
 
     if len(all_faces) < num_frames:
         print(f"[WARN] Not enough frames ({len(all_faces)}). Skipping.")
