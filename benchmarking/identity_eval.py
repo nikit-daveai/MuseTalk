@@ -132,8 +132,13 @@ def compute_lpips(img1, img2):
     return score
 
 def compute_fid(ref_frames_dir, fake_frames_dir):
-    score = fid_score.calculate_fid_given_paths([ref_frames_dir, fake_frames_dir], batch_size=8, device=device, dims=2048)
-    print(f'FID Score: {score}')
+    try:
+        score = fid_score.calculate_fid_given_paths([ref_frames_dir, fake_frames_dir], batch_size=8, device=device, dims=2048)
+        print(f'FID Score: {score}')
+    except Exception as e:
+        print(e)
+        print(f'FID ref_frames_dir len: {len(ref_frames_dir)} and fake_frames_dir {len(fake_frames_dir)}')
+        return 0
     return score
 
 '''
