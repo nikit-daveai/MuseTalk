@@ -16,6 +16,7 @@ import warnings
 import subprocess
 import pandas as pd
 import shutil
+from copy import deepcopy as copy
 
 warnings.filterwarnings('ignore')
 
@@ -41,7 +42,7 @@ class Benchmark:
             
             #new code
             if audio_path.replace('.wav', '') == video_path.replace('.mp4',''):
-                make_video_audio_pairs(d1, d2)
+                return make_video_audio_pairs(d1, d2)
 
             self.ground_truth.append(audio_path.replace('.wav', '.mp4'))
             self.video_audio_pairs.append([str(video_path), str(audio_path)])
@@ -50,8 +51,11 @@ class Benchmark:
         
         print(f'Video directories at {self.source_path}: {dirs}')
         dir_pairs = []
-
+        
         for d in dirs:
+            if not isdir(d):
+                print(f'{d} is not a directory, skipping..')
+                continue
             #old code 
             #x = [[d, i] for i in dirs if i != d and basename(i).split('_')[1] == basename(d).split('_')[1]]
             #New code with same dir
@@ -208,8 +212,7 @@ def return_ref_video_paths(model_results_path, source_path = './benchmarking_vid
 
 def main(args):
     
-    original_mode = 'original'
-    finetuned_mode = 'finetuned'
+    mode = args.stage
     
     benchmark = Benchmark(args.source_path, args)
     # ref_gen_video_pairs = [
@@ -217,20 +220,20 @@ def main(args):
     #      '/home/nikit/benchmarking_videos/hindi_male_pm_modi_1/clip006_pm_modi_1.mp4']
     # ]
     # benchmark.benchmarking(ref_gen_video_pairs, model_stage = original_mode)
-
-    original_model_results = join(args.result_dir, original_mode, args.version)
-    output_csv_path = join(original_model_results, f'{original_mode}_benchmarking.csv')
-    ref_gen_video_pairs = return_ref_video_paths(original_model_results, args.source_path)
-
-    print(f'Starting benchmarking onf {original_mode}')
-    benchmark.benchmarking(ref_gen_video_pairs, output_csv_path = output_csv_path, model_stage = original_mode)
     
-    finetuned_model_results = join(args.result_dir, finetuned_mode, args.version)
-    output_csv_path = join(finetuned_model_results, f'{finetuned_mode}_benchmarking.csv')
-    ref_gen_video_pairs = return_ref_video_paths(finetuned_model_results, args.source_path)
+    model_results = join(args.result_dir, mode, args.version)
+    output_csv_path = join(model_results, f'{mode}_benchmarking.csv')
+    ref_gen_video_pairs = return_ref_video_paths(model_results, args.source_path)
 
-    print(f'Starting benchmarking onf {finetuned_mode}')
-    benchmark.benchmarking(ref_gen_video_pairs, output_csv_path = output_csv_path, model_stage = finetuned_mode)
+    print(f'Starting benchmarking onf {mode}')
+    benchmark.benchmarking(ref_gen_video_pairs, output_csv_path = output_csv_path, model_stage = mode)
+    
+    # finetuned_model_results = join(args.result_dir, mode, args.version)
+    # output_csv_path = join(finetuned_model_results, f'{mode}_benchmarking.csv')
+    # ref_gen_video_pairs = return_ref_video_paths(finetuned_model_results, args.source_path)
+
+    # print(f'Starting benchmarking onf {mode}')
+    # benchmark.benchmarking(ref_gen_video_pairs, output_csv_path = output_csv_path, model_stage = finetuned_mode)
 
 
 
@@ -248,7 +251,7 @@ if __name__ == '__main__':
     parser.add_argument("--unet_config", type=str, default="./models/musetalk/config.json", help="Path to UNet configuration file")
     parser.add_argument("--unet_model_path", type=str, default="./models/musetalkV15/unet.pth", help="Path to UNet model weights")
     parser.add_argument("--result_dir", default='./results', help="Directory for output results")
-    parser.add_argument("--stage", type=str, default='original', help="Stage to select for getting output from model.")
+    parser.add_argument("--stage", type=str, required= True, default='original', help="Stage to select for getting output from model.")
     parser.add_argument("--source_path", type = str, default='./benchmarking_videos')
     parser.add_argument("--force_generate", type=bool, default=False, help="Force generate video even if already exists.")
 
